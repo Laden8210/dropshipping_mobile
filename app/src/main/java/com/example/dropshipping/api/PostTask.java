@@ -53,6 +53,7 @@ public class PostTask extends AsyncTask<JSONObject, String, String> {
             urlConnection.setRequestProperty("Accept", "application/json");
 
             if (SessionManager.getInstance(context).getToken() != null){
+                Log.d("Token", "Token: " + SessionManager.getInstance(context).getToken());
                 urlConnection.setRequestProperty("Authorization", "Bearer " + SessionManager.getInstance(context).getToken());
             }else if(postData.has("token")){
                 urlConnection.setRequestProperty("Authorization", "Bearer " + postData.getString("token"));

@@ -5,169 +5,58 @@ import java.util.List;
 
 public class ProductItem {
 
+
     @SerializedName("product_id")
-    private int productId;
-
-    @SerializedName("user_id")
-    private String userId;
-
-    @SerializedName("pid")
-    private String pid;
-
+    private int pid;
     @SerializedName("product_name")
     private String productName;
-
-    @SerializedName("supplier_id")
-    private String supplierId;
-
     @SerializedName("product_sku")
     private String productSku;
-
-    @SerializedName("category")
-    private String category;
-
-    @SerializedName("created_at")
-    private String createdAt;
-
+    @SerializedName("product_weight")
+    private int productWeight;
     @SerializedName("status")
     private String status;
-
-    @SerializedName("updated_at")
-    private String updatedAt;
-
-    @SerializedName("productNameSet")
-    private List<String> productNameSet;
-
-    @SerializedName("productNameEn")
-    private String productNameEn;
-
-    @SerializedName("productSku")
-    private String productSkuDuplicate;
-
-    @SerializedName("productImageSet")
-    private List<String> productImageSet;
-
-    @SerializedName("productWeight")
-    private String productWeight;
-
-    @SerializedName("productUnit")
-    private String productUnit;
-
-    @SerializedName("productType")
-    private String productType;
-
-    @SerializedName("categoryId")
-    private String categoryId;
-
-    @SerializedName("categoryName")
+    @SerializedName("category_name")
     private String categoryName;
 
-    @SerializedName("entryCode")
-    private String entryCode;
+    @SerializedName("profit_margin")
+    private String profitMargin;
 
-    @SerializedName("entryName")
-    private String entryName;
+    @SerializedName("price")
+    private String price;
 
-    @SerializedName("entryNameEn")
-    private String entryNameEn;
+    @SerializedName("currency")
+    private String currency;
 
-    @SerializedName("materialNameSet")
-    private List<String> materialNameSet;
+    @SerializedName("change_date")
+    private String changeDate;
 
-    @SerializedName("materialNameEnSet")
-    private List<String> materialNameEnSet;
+    @SerializedName("primary_image")
+    private String primaryImage;
 
-    @SerializedName("materialKeySet")
-    private List<String> materialKeySet;
+    @SerializedName("warehouse_name")
+    private String warehouseName;
 
-    @SerializedName("packingWeight")
-    private String packingWeight;
+    @SerializedName("warehouse_address")
+    private String warehouseAddress;
 
-    @SerializedName("packingNameSet")
-    private List<String> packingNameSet;
+    @SerializedName("current_stock")
+    private int currentStock;
 
-    @SerializedName("packingNameEnSet")
-    private List<String> packingNameEnSet;
+    @SerializedName("converted_price")
+    private double convertedPrice;
 
-    @SerializedName("packingKeySet")
-    private List<String> packingKeySet;
+    @SerializedName("converted_currency")
+    private String convertedCurrency;
 
-    @SerializedName("productKeySet")
-    private List<String> productKeySet;
+    @SerializedName("selling_price")
+    private double sellingPrice;
 
-    @SerializedName("productKeyEn")
-    private String productKeyEn;
-
-    @SerializedName("productProSet")
-    private List<String> productProSet;
-
-    @SerializedName("productProEnSet")
-    private List<String> productProEnSet;
-
-    @SerializedName("sellPrice")
-    private String sellPrice;
-
-    @SerializedName("sourceFrom")
-    private int sourceFrom;
-
-    @SerializedName("description")
-    private String description;
-
-    @SerializedName("variants")
-    private List<Variant> variants;
-
-    @SerializedName("addMarkStatus")
-    private int addMarkStatus;
-
-    @SerializedName("createrTime")
-    private String createrTime;
-
-    @SerializedName("productVideo")
-    private String productVideo;
-
-    @SerializedName("suggestSellPrice")
-    private String suggestSellPrice;
-
-    @SerializedName("listedNum")
-    private int listedNum;
-
-    @SerializedName("supplierName")
-    private String supplierName;
-
-    @SerializedName("stock")
-    private List<Stock> stock;
-
-    @SerializedName("totalInventory")
-    private int totalInventory;
-
-    @SerializedName("exchangeRate")
-    private double exchangeRate;
-
-    @SerializedName("status_db")
-    private String statusDb;
-
-
-    public int getProductId() {
-        return productId;
-    }
-
-    public void setProductId(int productId) {
-        this.productId = productId;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public String getPid() {
+    public int getPid() {
         return pid;
     }
 
-    public void setPid(String pid) {
+    public void setPid(int pid) {
         this.pid = pid;
     }
 
@@ -179,14 +68,6 @@ public class ProductItem {
         this.productName = productName;
     }
 
-    public String getSupplierId() {
-        return supplierId;
-    }
-
-    public void setSupplierId(String supplierId) {
-        this.supplierId = supplierId;
-    }
-
     public String getProductSku() {
         return productSku;
     }
@@ -195,20 +76,12 @@ public class ProductItem {
         this.productSku = productSku;
     }
 
-    public String getCategory() {
-        return category;
+    public int getProductWeight() {
+        return productWeight;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public String getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
+    public void setProductWeight(int productWeight) {
+        this.productWeight = productWeight;
     }
 
     public String getStatus() {
@@ -219,78 +92,6 @@ public class ProductItem {
         this.status = status;
     }
 
-    public String getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(String updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public List<String> getProductNameSet() {
-        return productNameSet;
-    }
-
-    public void setProductNameSet(List<String> productNameSet) {
-        this.productNameSet = productNameSet;
-    }
-
-    public String getProductNameEn() {
-        return productNameEn;
-    }
-
-    public void setProductNameEn(String productNameEn) {
-        this.productNameEn = productNameEn;
-    }
-
-    public String getProductSkuDuplicate() {
-        return productSkuDuplicate;
-    }
-
-    public void setProductSkuDuplicate(String productSkuDuplicate) {
-        this.productSkuDuplicate = productSkuDuplicate;
-    }
-
-    public List<String> getProductImageSet() {
-        return productImageSet;
-    }
-
-    public void setProductImageSet(List<String> productImageSet) {
-        this.productImageSet = productImageSet;
-    }
-
-    public String getProductWeight() {
-        return productWeight;
-    }
-
-    public void setProductWeight(String productWeight) {
-        this.productWeight = productWeight;
-    }
-
-    public String getProductUnit() {
-        return productUnit;
-    }
-
-    public void setProductUnit(String productUnit) {
-        this.productUnit = productUnit;
-    }
-
-    public String getProductType() {
-        return productType;
-    }
-
-    public void setProductType(String productType) {
-        this.productType = productType;
-    }
-
-    public String getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(String categoryId) {
-        this.categoryId = categoryId;
-    }
-
     public String getCategoryName() {
         return categoryName;
     }
@@ -299,227 +100,91 @@ public class ProductItem {
         this.categoryName = categoryName;
     }
 
-    public String getEntryCode() {
-        return entryCode;
+    public String getProfitMargin() {
+        return profitMargin;
     }
 
-    public void setEntryCode(String entryCode) {
-        this.entryCode = entryCode;
+    public void setProfitMargin(String profitMargin) {
+        this.profitMargin = profitMargin;
     }
 
-    public String getEntryName() {
-        return entryName;
+    public String getPrice() {
+        return price;
     }
 
-    public void setEntryName(String entryName) {
-        this.entryName = entryName;
+    public void setPrice(String price) {
+        this.price = price;
     }
 
-    public String getEntryNameEn() {
-        return entryNameEn;
+    public String getCurrency() {
+        return currency;
     }
 
-    public void setEntryNameEn(String entryNameEn) {
-        this.entryNameEn = entryNameEn;
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 
-    public List<String> getMaterialNameSet() {
-        return materialNameSet;
+    public String getChangeDate() {
+        return changeDate;
     }
 
-    public void setMaterialNameSet(List<String> materialNameSet) {
-        this.materialNameSet = materialNameSet;
+    public void setChangeDate(String changeDate) {
+        this.changeDate = changeDate;
     }
 
-    public List<String> getMaterialNameEnSet() {
-        return materialNameEnSet;
+    public String getPrimaryImage() {
+        return primaryImage;
     }
 
-    public void setMaterialNameEnSet(List<String> materialNameEnSet) {
-        this.materialNameEnSet = materialNameEnSet;
+    public void setPrimaryImage(String primaryImage) {
+        this.primaryImage = primaryImage;
     }
 
-    public List<String> getMaterialKeySet() {
-        return materialKeySet;
+    public String getWarehouseName() {
+        return warehouseName;
     }
 
-    public void setMaterialKeySet(List<String> materialKeySet) {
-        this.materialKeySet = materialKeySet;
+    public void setWarehouseName(String warehouseName) {
+        this.warehouseName = warehouseName;
     }
 
-    public String getPackingWeight() {
-        return packingWeight;
+    public String getWarehouseAddress() {
+        return warehouseAddress;
     }
 
-    public void setPackingWeight(String packingWeight) {
-        this.packingWeight = packingWeight;
+    public void setWarehouseAddress(String warehouseAddress) {
+        this.warehouseAddress = warehouseAddress;
     }
 
-    public List<String> getPackingNameSet() {
-        return packingNameSet;
+    public int getCurrentStock() {
+        return currentStock;
     }
 
-    public void setPackingNameSet(List<String> packingNameSet) {
-        this.packingNameSet = packingNameSet;
+    public void setCurrentStock(int currentStock) {
+        this.currentStock = currentStock;
     }
 
-    public List<String> getPackingNameEnSet() {
-        return packingNameEnSet;
+    public double getConvertedPrice() {
+        return convertedPrice;
     }
 
-    public void setPackingNameEnSet(List<String> packingNameEnSet) {
-        this.packingNameEnSet = packingNameEnSet;
+    public void setConvertedPrice(double convertedPrice) {
+        this.convertedPrice = convertedPrice;
     }
 
-    public List<String> getPackingKeySet() {
-        return packingKeySet;
+    public String getConvertedCurrency() {
+        return convertedCurrency;
     }
 
-    public void setPackingKeySet(List<String> packingKeySet) {
-        this.packingKeySet = packingKeySet;
+    public void setConvertedCurrency(String convertedCurrency) {
+        this.convertedCurrency = convertedCurrency;
     }
 
-    public List<String> getProductKeySet() {
-        return productKeySet;
+    public double getSellingPrice() {
+        return sellingPrice;
     }
 
-    public void setProductKeySet(List<String> productKeySet) {
-        this.productKeySet = productKeySet;
-    }
-
-    public String getProductKeyEn() {
-        return productKeyEn;
-    }
-
-    public void setProductKeyEn(String productKeyEn) {
-        this.productKeyEn = productKeyEn;
-    }
-
-    public List<String> getProductProSet() {
-        return productProSet;
-    }
-
-    public void setProductProSet(List<String> productProSet) {
-        this.productProSet = productProSet;
-    }
-
-    public List<String> getProductProEnSet() {
-        return productProEnSet;
-    }
-
-    public void setProductProEnSet(List<String> productProEnSet) {
-        this.productProEnSet = productProEnSet;
-    }
-
-    public String getSellPrice() {
-        return sellPrice;
-    }
-
-    public void setSellPrice(String sellPrice) {
-        this.sellPrice = sellPrice;
-    }
-
-    public int getSourceFrom() {
-        return sourceFrom;
-    }
-
-    public void setSourceFrom(int sourceFrom) {
-        this.sourceFrom = sourceFrom;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public List<Variant> getVariants() {
-        return variants;
-    }
-
-    public void setVariants(List<Variant> variants) {
-        this.variants = variants;
-    }
-
-    public int getAddMarkStatus() {
-        return addMarkStatus;
-    }
-
-    public void setAddMarkStatus(int addMarkStatus) {
-        this.addMarkStatus = addMarkStatus;
-    }
-
-    public String getCreaterTime() {
-        return createrTime;
-    }
-
-    public void setCreaterTime(String createrTime) {
-        this.createrTime = createrTime;
-    }
-
-    public String getProductVideo() {
-        return productVideo;
-    }
-
-    public void setProductVideo(String productVideo) {
-        this.productVideo = productVideo;
-    }
-
-    public String getSuggestSellPrice() {
-        return suggestSellPrice;
-    }
-
-    public void setSuggestSellPrice(String suggestSellPrice) {
-        this.suggestSellPrice = suggestSellPrice;
-    }
-
-    public int getListedNum() {
-        return listedNum;
-    }
-
-    public void setListedNum(int listedNum) {
-        this.listedNum = listedNum;
-    }
-
-    public String getSupplierName() {
-        return supplierName;
-    }
-
-    public void setSupplierName(String supplierName) {
-        this.supplierName = supplierName;
-    }
-
-    public List<Stock> getStock() {
-        return stock;
-    }
-
-    public void setStock(List<Stock> stock) {
-        this.stock = stock;
-    }
-
-    public int getTotalInventory() {
-        return totalInventory;
-    }
-
-    public void setTotalInventory(int totalInventory) {
-        this.totalInventory = totalInventory;
-    }
-
-    public double getExchangeRate() {
-        return exchangeRate;
-    }
-
-    public void setExchangeRate(double exchangeRate) {
-        this.exchangeRate = exchangeRate;
-    }
-
-    public String getStatusDb() {
-        return statusDb;
-    }
-
-    public void setStatusDb(String statusDb) {
-        this.statusDb = statusDb;
+    public void setSellingPrice(double sellingPrice) {
+        this.sellingPrice = sellingPrice;
     }
 }

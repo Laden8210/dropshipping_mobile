@@ -1,6 +1,8 @@
 package com.example.dropshipping.view;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -10,28 +12,38 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.bumptech.glide.Glide;
 import com.example.dropshipping.R;
 import com.example.dropshipping.api.PostCallback;
 import com.example.dropshipping.api.PostTask;
+import com.example.dropshipping.model.CheckoutProduct;
 import com.example.dropshipping.util.Messenger;
+import com.google.android.material.button.MaterialButton;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class ProductDetailsActivity extends AppCompatActivity implements PostCallback {
 
+    private MaterialButton buyNowBtn;
+    private int pid;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_product_details);
 
+        buyNowBtn = findViewById(R.id.buyNowBtn);
+
+
+
         if (getIntent().hasExtra("pid")){
-            String pid = getIntent().getStringExtra("pid");
+            this.pid = getIntent().getIntExtra("pid", 0);
 
             JSONObject params = new JSONObject();
             try {
                 params.put("pid", pid);
+                Log.d("ProductDetailsActivity", "Fetching product with PID: " + pid);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -48,10 +60,10 @@ public class ProductDetailsActivity extends AppCompatActivity implements PostCal
             if (response.getString("status").equals("success")) {
                 JSONObject data = response.getJSONObject("data");
 
-                String name = data.optString("productNameEn");
-                String description = data.optString("description").replaceAll("(?i)<img[^>]*>", "");
-                String price = data.optString("exchangeRate");
-                JSONArray images = data.optJSONArray("productImageSet");
+                String name = data.optString("product_name");
+                String description = data.optString("description");
+                String price = data.optString("selling_price");
+                String images = data.optString("primary_image");
 
                 // Update views
                 TextView nameView = findViewById(R.id.productName);
@@ -63,22 +75,30 @@ public class ProductDetailsActivity extends AppCompatActivity implements PostCal
 
                 priceView.setText("₱ " + price);
 
-                // Optional: Convert HTML description to Spanned
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                    descView.setText(android.text.Html.fromHtml(description, android.text.Html.FROM_HTML_MODE_LEGACY));
-                } else {
-                    descView.setText(android.text.Html.fromHtml(description));
-                }
+                descView.setText(description);
 
-
-                // Load first image with Glide
-                if (images != null && images.length() > 0) {
-                    String imageUrl = images.getString(0);
-                    com.bumptech.glide.Glide.with(this)
-                            .load(imageUrl)
+                if (images != null && !images.isEmpty()) {
+                    Glide.with(this)
+                            .load(images)
                             .placeholder(R.drawable.product_sample)
                             .into(imageView);
+                } else {
+                    imageView.setImageResource(R.drawable.product_sample);
                 }
+
+                buyNowBtn.setOnClickListener(view -> {
+                    Intent intent = new Intent(this, OrderProductActivity.class);
+
+                    CheckoutProduct checkoutProduct = new CheckoutProduct(
+                            pid,
+                            name,
+                            Double.parseDouble(price),
+                            1
+                    );
+                    intent.putExtra("checkoutProduct", checkoutProduct);
+
+                    startActivity(intent);
+                });
 
             } else {
                 Messenger.showAlertDialog(this, "Failed", response.getString("message"), "Ok");
@@ -89,8 +109,6 @@ public class ProductDetailsActivity extends AppCompatActivity implements PostCal
             Messenger.showAlertDialog(this, "Parse Error", "Failed to parse product details.", "Ok");
         }
     }
-
-
     @Override
     public void onPostError(String errorMessage) {
         Messenger.showAlertDialog(this, "Error", errorMessage, "Ok");

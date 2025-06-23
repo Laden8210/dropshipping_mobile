@@ -43,11 +43,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     public void onBindViewHolder(ProductViewHolder holder, int position) {
         ProductItem item = productItem.get(position);
         holder.tvProductName.setText(item.getProductName());
-        holder.tvPrice.setText("₱" + item.getExchangeRate());
+        holder.tvPrice.setText("₱" + item.getSellingPrice());
 
-        if (item.getProductImageSet() != null && !item.getProductImageSet().isEmpty()) {
+        if (item.getPrimaryImage() != null && !item.getPrimaryImage().isEmpty()) {
             Glide.with(context)
-                    .load(item.getProductImageSet().get(0))
+                    .load(item.getPrimaryImage())
                     .placeholder(R.drawable.product_sample)
                     .into(holder.imageView);
         } else {

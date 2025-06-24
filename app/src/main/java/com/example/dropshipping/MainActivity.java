@@ -39,10 +39,10 @@ public class MainActivity extends AppCompatActivity implements PostCallback {
 
         setContentView(R.layout.activity_main);
 
-        if (SessionManager.getInstance(this).getToken() != null) {
-            Intent intent = new Intent(this, HeroActivity.class);
-            startActivity(intent);
-        }
+//        if (SessionManager.getInstance(this).getToken() != null) {
+//            Intent intent = new Intent(this, HeroActivity.class);
+//            startActivity(intent);
+//        }
 
         this.usernameEditText = findViewById(R.id.usernameEditText);
         this.passwordEditText = findViewById(R.id.passwordEditText);

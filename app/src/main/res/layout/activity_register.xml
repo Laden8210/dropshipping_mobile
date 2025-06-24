@@ -104,19 +104,6 @@
                             android:inputType="phone"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <!-- Birth Date -->
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp">
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/birthDate"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="Birth Date"
-                            android:focusable="false"
-                            android:clickable="true"/>
-                    </com.google.android.material.textfield.TextInputLayout>
 
                     <Spinner
                         android:id="@+id/genderSpinner"

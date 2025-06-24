@@ -25,7 +25,7 @@ import org.json.JSONObject;
 
 public class RegisterActivity extends AppCompatActivity implements PostCallback {
 
-    private TextInputEditText firstName, lastName, email, phone, birthdate, password, confirmPassword;
+    private TextInputEditText firstName, lastName, email, phone, password, confirmPassword;
     private Spinner genderSpinner;
     private MaterialButton registerButton;
 
@@ -40,7 +40,7 @@ public class RegisterActivity extends AppCompatActivity implements PostCallback 
         lastName = findViewById(R.id.lastName);
         email = findViewById(R.id.email);
         phone = findViewById(R.id.phone);
-        birthdate = findViewById(R.id.birthDate);
+
         password = findViewById(R.id.password);
         confirmPassword = findViewById(R.id.confirmPassword);
 
@@ -59,7 +59,6 @@ public class RegisterActivity extends AppCompatActivity implements PostCallback 
         String lastName = Miner.getText(this.lastName);
         String email = Miner.getText(this.email);
         String phone = Miner.getText(this.phone);
-        String birthdate = Miner.getText(this.birthdate);
         String password = Miner.getText(this.password);
         String confirmPassword = Miner.getText(this.confirmPassword);
         String gender = genderSpinner.getSelectedItem().toString();

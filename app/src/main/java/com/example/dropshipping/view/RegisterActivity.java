@@ -69,7 +69,6 @@ public class RegisterActivity extends AppCompatActivity implements PostCallback 
         user.setLastName(lastName);
         user.setEmail(email);
         user.setPhone(phone);
-        user.setBirthdate(birthdate);
         user.setPassword(password);
         user.setConfirmPassword(confirmPassword);
         user.setGender(gender);

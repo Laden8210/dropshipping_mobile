@@ -3,6 +3,7 @@ package com.example.dropshipping.view;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +29,7 @@ public class RegisterActivity extends AppCompatActivity implements PostCallback 
     private TextInputEditText firstName, lastName, email, phone, password, confirmPassword;
     private Spinner genderSpinner;
     private MaterialButton registerButton;
+    private TextView loginText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,10 @@ public class RegisterActivity extends AppCompatActivity implements PostCallback 
 
         registerButton = findViewById(R.id.registerButton);
         registerButton.setOnClickListener(this::registerAction);
+        loginText = findViewById(R.id.loginText);
+        loginText.setOnClickListener(view -> {
+            finish();
+        });
 
 
 

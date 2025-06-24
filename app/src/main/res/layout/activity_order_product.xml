@@ -2,15 +2,16 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:fillViewport="true"
+    android:padding="16dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:orientation="vertical">
 
         <!-- Product Section -->
         <TextView
@@ -37,11 +38,14 @@
             android:layout_marginTop="16dp"
             android:paddingBottom="8dp"/>
 
+        <!-- Address Selection Card -->
         <androidx.cardview.widget.CardView
+            android:id="@+id/addressCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardElevation="4dp"
-            app:cardCornerRadius="8dp">
+            app:cardCornerRadius="8dp"
+            android:foreground="?attr/selectableItemBackground">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -49,36 +53,69 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <TextView
-                    android:id="@+id/addressName"
+                <!-- Default state when no address is selected -->
+                <LinearLayout
+                    android:id="@+id/noAddressLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="John Doe"
-                    android:textSize="16sp"/>
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="16dp">
 
-                <TextView
-                    android:id="@+id/addressStreet"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="123 Main Street"
-                    android:layout_marginTop="4dp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No Address Selected"
+                        android:textSize="16sp"
+                        android:textColor="?android:attr/textColorSecondary"/>
 
-                <TextView
-                    android:id="@+id/addressCity"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="New York, NY 10001"
-                    android:layout_marginTop="4dp"/>
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnAddAddress"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Add Address"
+                        android:layout_marginTop="16dp"
+                        app:strokeColor="?attr/colorPrimary"/>
+                </LinearLayout>
 
-                <TextView
-                    android:id="@+id/addressPhone"
+                <!-- Address details (hidden by default) -->
+                <LinearLayout
+                    android:id="@+id/addressDetailsLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="+1 (555) 123-4567"
-                    android:layout_marginTop="4dp"/>
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/addressLine"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"/>
+
+                    <TextView
+                        android:id="@+id/addressRegionCity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"/>
+
+                    <TextView
+                        android:id="@+id/addressBrgyPostal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnChangeAddress"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Change Address"
+                        android:layout_marginTop="16dp"
+                        app:strokeColor="?attr/colorPrimary"/>
+                </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
-
         <!-- Payment Summary -->
         <TextView
             android:layout_width="match_parent"
@@ -187,6 +224,7 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
+
         <!-- Payment Method -->
         <TextView
             android:layout_width="match_parent"
@@ -203,34 +241,43 @@
             app:cardElevation="4dp"
             app:cardCornerRadius="8dp">
 
-            <RadioGroup
-                android:id="@+id/paymentMethodGroup"
+
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+                app:cardElevation="4dp"
+                app:cardCornerRadius="8dp">
 
-                <RadioButton
-                    android:id="@+id/creditCardOption"
+                <RadioGroup
+                    android:id="@+id/paymentMethodGroup"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Credit Card"
-                    android:checked="true"/>
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
-                <RadioButton
-                    android:id="@+id/paypalOption"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="PayPal"
-                    android:layout_marginTop="8dp"/>
+                    <RadioButton
+                        android:id="@+id/creditCardOption"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Credit Card"
+                        android:checked="true"/>
 
-                <RadioButton
-                    android:id="@+id/cashOption"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Cash on Delivery"
-                    android:layout_marginTop="8dp"/>
-            </RadioGroup>
+                    <RadioButton
+                        android:id="@+id/paypalOption"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="PayPal"
+                        android:layout_marginTop="8dp"/>
+
+                    <RadioButton
+                        android:id="@+id/cashOption"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Cash on Delivery"
+                        android:layout_marginTop="8dp"/>
+                </RadioGroup>
+            </androidx.cardview.widget.CardView>
+
         </androidx.cardview.widget.CardView>
 
         <!-- Place Order Button -->
@@ -242,7 +289,9 @@
             android:textAllCaps="false"
             app:cornerRadius="4dp"
             android:textColor="@android:color/white"
+            android:backgroundTint="?attr/colorPrimary"
             android:layout_marginTop="24dp"
             android:paddingVertical="14dp"/>
     </LinearLayout>
 </ScrollView>
+

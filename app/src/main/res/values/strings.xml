@@ -7,5 +7,12 @@
     </string-array>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="notifications">Notifications</string>
+    <string name="clear_all">Clear All</string>
+    <string name="no_notifications">No Notifications</string>
+    <string name="no_notifications_subtitle">We\'ll notify you when something arrives</string>
+    <string name="refresh">Refresh</string>
+    <string name="empty_notifications">Empty notifications</string>
+    <string name="notification_icon">Notification icon</string>
 
 </resources>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <!-- System Messages (Date separator, status updates) -->
+    <TextView
+        android:id="@+id/tvSystemMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/text_secondary"
+        android:textSize="12sp"
+        android:visibility="gone"
+        android:paddingVertical="8dp"/>
+
+    <!-- User/Support Message Container -->
+    <LinearLayout
+        android:id="@+id/messageContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <!-- Support Avatar (Only shown for support messages) -->
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivSupportAvatar"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Circle"
+            android:src="@drawable/ic_support_agent"
+            android:visibility="gone"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <!-- Message Bubble -->
+            <TextView
+                android:id="@+id/tvMessageText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="12dp"
+                android:textSize="16sp" />
+
+            <!-- Message Metadata -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="4dp">
+
+                <TextView
+                    android:id="@+id/tvSenderName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/tvTimestamp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="@color/text_secondary"
+                    android:layout_marginStart="8dp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- User Avatar (Only shown for user messages) -->
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivUserAvatar"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Circle"
+            android:src="@drawable/ic_user_profile"
+            android:visibility="gone"/>
+    </LinearLayout>
+</LinearLayout>

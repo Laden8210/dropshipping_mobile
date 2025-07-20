@@ -1,8 +1,10 @@
 package com.example.dropshipping.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -16,11 +18,18 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class HeroActivity extends AppCompatActivity {
 
+    private CardView cvCart;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_hero);
+        cvCart = findViewById(R.id.cvCart);
+
+        cvCart.setOnClickListener(v -> {
+
+            startActivity(new Intent(HeroActivity.this, CartActivity.class));
+        });
 
 
         BottomNavigationView bnvHero = findViewById(R.id.bnvHero);

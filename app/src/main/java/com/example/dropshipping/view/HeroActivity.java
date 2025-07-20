@@ -2,18 +2,14 @@ package com.example.dropshipping.view;
 
 import android.os.Bundle;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.dropshipping.R;
 import com.example.dropshipping.fragment.AccountFragment;
-import com.example.dropshipping.fragment.CartFragment;
+import com.example.dropshipping.fragment.OrderFragment;
 import com.example.dropshipping.fragment.NotificationFragment;
 import com.example.dropshipping.fragment.ShopFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -41,7 +37,7 @@ public class HeroActivity extends AppCompatActivity {
                 return loadFragment(selectedFragment);
             }
             if (item.getItemId() == R.id.menu_cart) {
-                selectedFragment = new CartFragment();
+                selectedFragment = new OrderFragment();
                 return loadFragment(selectedFragment);
             }
             if (item.getItemId() == R.id.menu_notification) {

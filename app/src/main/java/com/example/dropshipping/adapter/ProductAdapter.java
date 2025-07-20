@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.dropshipping.R;
+import com.example.dropshipping.api.ApiAddress;
 import com.example.dropshipping.model.ProductItem;
 import com.example.dropshipping.view.ProductDetailsActivity;
 
@@ -47,7 +48,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
         if (item.getPrimaryImage() != null && !item.getPrimaryImage().isEmpty()) {
             Glide.with(context)
-                    .load(item.getPrimaryImage())
+                    .load(ApiAddress.imageUrl + item.getPrimaryImage())
                     .placeholder(R.drawable.product_sample)
                     .into(holder.imageView);
         } else {

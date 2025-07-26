@@ -5,14 +5,15 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.ProductDetailsActivity"
-    android:orientation="vertical">
+    android:background="@color/white"
+    tools:context=".view.ProductDetailsActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        app:titleTextColor="@android:color/black"
+        android:background="?attr/colorPrimary"
+        app:titleTextColor="@android:color/white"
         app:title="Product Details"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:layout_constraintTop_toTopOf="parent"
@@ -23,112 +24,185 @@
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/materialButton"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="12dp">
+            android:padding="16dp">
 
+            <!-- Product Image Card -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
                 app:cardCornerRadius="12dp"
-                app:cardElevation="0dp">
+                app:cardElevation="4dp"
+                app:cardUseCompatPadding="true">
 
                 <ImageView
                     android:id="@+id/productImage"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:scaleType="centerCrop" />
-
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:contentDescription="Product image" />
             </androidx.cardview.widget.CardView>
 
-
-
-            <TextView
-                android:id="@+id/productName"
+            <!-- Store Information -->
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:layout_marginTop="12dp"/>
+                android:layout_marginTop="16dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="2dp"
+                app:cardUseCompatPadding="true">
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="8dp"
-                android:background="@android:color/darker_gray" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="12dp">
 
+                    <ImageView
+                        android:id="@+id/storeLogo"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:scaleType="centerCrop"
+                        android:contentDescription="Store logo" />
 
-            <TextView
-                android:id="@+id/productDescription"
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="12dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/storeName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:textColor="@android:color/black" />
+
+                        <TextView
+                            android:id="@+id/storeAddress"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="12sp"
+                            android:textColor="@android:color/darker_gray" />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Product Info Section -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"/>
+                android:layout_marginTop="16dp"
+                android:orientation="vertical">
 
+                <TextView
+                    android:id="@+id/productName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:textColor="@android:color/black" />
 
-            <TextView
-                android:id="@+id/productPrice"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:text="Price: $99.99"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/productSku"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:textSize="12sp"
+                    android:textColor="@android:color/darker_gray" />
 
+                <TextView
+                    android:id="@+id/productStock"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
+                <TextView
+                    android:id="@+id/productPrice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+    />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@android:color/darker_gray" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Description"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/black"
+                    android:layout_marginBottom="8dp"/>
+
+                <TextView
+                    android:id="@+id/productDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textColor="@android:color/black" />
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/materialButton"
+    <!-- Action Buttons -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginBottom="12dp"
-        android:backgroundTint="@android:color/black"
-        android:text="Add to Cart"
-        android:textColor="@android:color/white"
-        app:cornerRadius="4dp"
-        app:icon="@drawable/shopping_bag"
-        app:iconGravity="textStart"
-        app:iconPadding="8dp"
-        app:iconTint="@android:color/white"
-        app:layout_constraintBottom_toTopOf="@+id/buyNowBtn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/buyNowBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginBottom="12dp"
-        android:backgroundTint="@android:color/holo_blue_light"
-        android:text="Buy Now"
-        android:textColor="@android:color/white"
-        app:cornerRadius="4dp"
-        app:icon="@drawable/wallet"
-        app:iconGravity="textStart"
-        app:iconPadding="8dp"
-        app:iconTint="@android:color/white"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent">
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/materialButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:backgroundTint="@color/black"
+            android:text="Add to Cart"
+            android:textColor="@color/white"
+            app:cornerRadius="8dp"
+            app:icon="@drawable/shopping_bag"
+            app:iconGravity="textStart"
+            app:iconPadding="8dp"
+            app:iconTint="@color/white" />
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buyNowBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
 
-
-
-
-
-
-
+            android:text="Buy Now"
+            android:textColor="@color/white"
+            app:cornerRadius="8dp"
+            app:icon="@drawable/wallet"
+            app:iconGravity="textStart"
+            app:iconPadding="8dp"
+            app:iconTint="@color/white" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Status text colors -->
+
+    <color name="primary_color">#6200EE</color>
+    <color name="dark_gray">#757575</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
     <color name="divider_color">#FFE0E0E0</color>
     <color name="status_default_text">#616161</color>  <!-- Gray 700 -->
     <color name="status_pending_text">#F57C00</color>  <!-- Orange 700 -->
@@ -19,6 +24,7 @@
     <color name="user_message_bg">#EDF7FF</color>
     <color name="support_message_bg">#F2F2F2</color>
     <color name="green">#4CAF50</color>
+    <color name="red">#F44336</color>
     <color name="light_gray">#FAFAFA</color>
 
     <color name="green_light">#4CAF50</color>

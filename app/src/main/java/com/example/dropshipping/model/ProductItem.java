@@ -52,6 +52,9 @@ public class ProductItem {
     @SerializedName("selling_price")
     private double sellingPrice;
 
+    @SerializedName("store_id")
+    private int storeId;
+
     public int getPid() {
         return pid;
     }
@@ -186,5 +189,11 @@ public class ProductItem {
 
     public void setSellingPrice(double sellingPrice) {
         this.sellingPrice = sellingPrice;
+    }
+    public int getStoreId() {
+        return storeId;
+    }
+    public void setStoreId(int storeId) {
+        this.storeId = storeId;
     }
 }

@@ -83,7 +83,7 @@ public class ShopFragment extends Fragment {
                 @Override
                 public void onPostSuccess(String responseData) {
                     try {
-                        // Parse JSON
+
                         Gson gson = new Gson();
                         JSONObject response = new JSONObject(responseData);
 
@@ -93,7 +93,6 @@ public class ShopFragment extends Fragment {
                             Type listType = new TypeToken<List<ProductItem>>() {}.getType();
                             List<ProductItem> popularProducts = gson.fromJson(productArray.toString(), listType);
 
-                            // Set adapter
                             ProductAdapter productAdapter = new ProductAdapter(getContext(), popularProducts);
                             rvPopularProducts.setAdapter(productAdapter);
                             rvPopularProducts.setHasFixedSize(true);

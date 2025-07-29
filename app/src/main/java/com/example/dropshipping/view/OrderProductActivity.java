@@ -29,6 +29,8 @@ import com.example.dropshipping.model.ShippingAddress;
 import com.example.dropshipping.util.Messenger;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButton;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -352,6 +354,13 @@ public class OrderProductActivity extends AppCompatActivity implements CheckoutP
             }
         }
 
+        if (getIntent().hasExtra("checkout_products")) {
+            String jsonProducts = getIntent().getStringExtra("checkout_products");
+            if (jsonProducts != null && !jsonProducts.isEmpty()) {
+                products.addAll(new Gson().fromJson(jsonProducts, new TypeToken<List<CheckoutProduct>>(){}.getType()));
+            }
+        }
+
         return products;
     }
 
@@ -411,9 +420,11 @@ public class OrderProductActivity extends AppCompatActivity implements CheckoutP
                 productObject.put("name", product.getName());
                 productObject.put("price", product.getPrice());
                 productObject.put("quantity", product.getQuantity());
+                productObject.put("store_id", product.getStoreId());
                 productsArray.put(productObject);
             }
             orderDetails.put("products", productsArray);
+
 
             new PostTask(this, this, "error", "order/place-order.php").execute(orderDetails);
         } catch (Exception e) {

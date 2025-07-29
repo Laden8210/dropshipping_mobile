@@ -1,5 +1,6 @@
 package com.example.dropshipping.view;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -15,14 +16,17 @@ import com.example.dropshipping.api.ApiAddress;
 import com.example.dropshipping.api.PostCallback;
 import com.example.dropshipping.api.PostTask;
 
+import com.example.dropshipping.model.CartItem;
 import com.example.dropshipping.model.CheckoutProduct;
 
+import com.example.dropshipping.util.CartManager;
 import com.example.dropshipping.util.Messenger;
 import com.google.android.material.button.MaterialButton;
 
 import org.json.JSONObject;
 
 import java.text.DecimalFormat;
+import java.util.List;
 
 public class ProductDetailsActivity extends AppCompatActivity implements PostCallback {
 
@@ -75,7 +79,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements PostCal
                 if (response.getString("status").equals("success")) {
                     JSONObject data = response.getJSONObject("data");
 
-                    // Extract data
+
                     String name = data.optString("product_name");
                     String description = data.optString("description");
                     double sellingPrice = data.optDouble("selling_price", 0);
@@ -85,8 +89,9 @@ public class ProductDetailsActivity extends AppCompatActivity implements PostCal
                     String storeName = data.optString("store_name");
                     String storeLogo = data.optString("store_logo_url");
                     String storeAddress = data.optString("store_address");
+                    int storeId = data.optInt("store_id", 0);
 
-                    // Update views
+
                     TextView nameView = findViewById(R.id.productName);
                     TextView descView = findViewById(R.id.productDescription);
                     ImageView imageView = findViewById(R.id.productImage);
@@ -104,7 +109,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements PostCal
                     storeNameView.setText(storeName);
                     storeAddressView.setText(storeAddress);
 
-                    // Stock information
+
                     if (stock > 0) {
                         stockView.setText("In Stock: " + stock + " items");
                         stockView.setTextColor(ContextCompat.getColor(this, R.color.green));
@@ -113,7 +118,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements PostCal
                         stockView.setTextColor(ContextCompat.getColor(this, R.color.red));
                     }
 
-                    // Load product image
+
                     if (!image.isEmpty()) {
                         String fullImageUrl =  ApiAddress.imageUrl  + image;
                         Glide.with(this)
@@ -125,7 +130,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements PostCal
                         imageView.setImageResource(R.drawable.product_sample);
                     }
 
-                    // Load store logo
+
                     if (!storeLogo.isEmpty()) {
                         String storeLogoUrl = ApiAddress.imageUrl  + storeLogo;
                         Glide.with(this)
@@ -137,39 +142,62 @@ public class ProductDetailsActivity extends AppCompatActivity implements PostCal
                         storeLogoView.setImageResource(R.drawable.ic_user_profile);
                     }
 
-                    // Handle buttons based on stock
+
                     boolean inStock = stock > 0;
                     buyNowBtn.setEnabled(inStock);
                     addToCartBtn.setEnabled(inStock);
                     buyNowBtn.setAlpha(inStock ? 1f : 0.5f);
                     addToCartBtn.setAlpha(inStock ? 1f : 0.5f);
 
-                    // Button click listeners
                     buyNowBtn.setOnClickListener(v -> {
                         CheckoutProduct product = new CheckoutProduct(
                                 pid,
                                 name,
                                 sellingPrice,
-                                1
+                                1,
+                                storeId
+
                         );
                         Intent intent = new Intent(this, OrderProductActivity.class);
                         intent.putExtra("checkoutProduct", product);
                         startActivity(intent);
                     });
 
-//                    addToCartBtn.setOnClickListener(v -> {
-//                        CartItem item = new CartItem(
-//                                pid,
-//                                name,
-//                                sellingPrice,
-//                                1,
-//                                image,
-//                                storeId,
-//                                storeName
-//                        );
-//                        CartManager.addToCart(item);
-//                        Messenger.showToast(this, "Added to cart: " + name);
-//                    });
+                    addToCartBtn.setOnClickListener(v -> {
+                        CartItem item = new CartItem(
+                                pid,
+                                sellingPrice,
+                                1,
+                                storeId
+                        );
+                        CartManager.addToCart(item, new CartManager.CartUpdateListener() {
+                            @Override
+                            public void onSuccess(String message, CartItem items) {
+                                Messenger.showAlertDialog(ProductDetailsActivity.this, "Success",
+                                        message, "OK", "Back to Home", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                            }
+                                        }, new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                Intent intent = new Intent(ProductDetailsActivity.this, HeroActivity.class);
+                                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                startActivity(intent);
+                                                finish();
+                                            }
+                                        }).show();
+                            }
+
+                            @Override
+                            public void onError(String error) {
+                                Messenger.showAlertDialog(ProductDetailsActivity.this, "Error",
+                                        error, "OK").show();
+                            }
+                        }, this);
+
+                    });
 
                 } else {
                     Messenger.showAlertDialog(this, "Error",

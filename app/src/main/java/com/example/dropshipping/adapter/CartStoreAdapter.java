@@ -1,5 +1,6 @@
 package com.example.dropshipping.adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +28,7 @@ public class CartStoreAdapter extends RecyclerView.Adapter<CartStoreAdapter.View
     }
 
     public interface OnProductSelectionChangedListener {
-        void onProductSelectionChanged(String storeId, String productId, boolean isSelected);
+        void onProductSelectionChanged(String storeId, String productId, String name, double price, int quantity, boolean isSelected);
     }
 
     public interface OnProductQuantityChangedListener {
@@ -89,9 +90,31 @@ public class CartStoreAdapter extends RecyclerView.Adapter<CartStoreAdapter.View
                 },
                 new CartProductAdapter.OnSelectionChangedListener() {
                     @Override
-                    public void onSelectionChanged(String productId, boolean isSelected) {
+                    public void onSelectionChanged(String productId, String name, double price, int quantity, boolean isSelected) {
                         if (productSelectionListener != null) {
-                            productSelectionListener.onProductSelectionChanged(store.getId(), productId, isSelected);
+                            productSelectionListener.onProductSelectionChanged(
+                                    store.getId(),
+                                    productId,
+                                    name,
+                                    price,
+                                    quantity,
+                                    isSelected
+                            );
+
+
+                            double subtotal = 0;
+                            int itemCount = 0;
+                            for (CartProduct product : store.getProducts()) {
+
+                                if (product.isSelected()) {
+                                    subtotal += product.getPrice() * product.getQuantity();
+                                    itemCount += product.getQuantity();
+                                }
+                            }
+                            holder.tvSubtotalLabel.setText("Subtotal (" + itemCount + " items)");
+                            holder.tvSubtotal.setText(String.format("₱%.2f", subtotal));
+                            holder.tvShipping.setText(String.format("₱%.2f", store.getShippingFee()));
+
                         }
                     }
                 }
@@ -111,8 +134,8 @@ public class CartStoreAdapter extends RecyclerView.Adapter<CartStoreAdapter.View
         }
 
         holder.tvSubtotalLabel.setText("Subtotal (" + itemCount + " items)");
-        holder.tvSubtotal.setText(String.format("$%.2f", subtotal));
-        holder.tvShipping.setText(String.format("$%.2f", store.getShippingFee()));
+        holder.tvSubtotal.setText(String.format("₱%.2f", subtotal));
+        holder.tvShipping.setText(String.format("₱%.2f", store.getShippingFee()));
 
         // Store checkbox logic
         boolean allSelected = true;

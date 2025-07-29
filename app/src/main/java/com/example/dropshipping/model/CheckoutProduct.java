@@ -13,11 +13,14 @@ public class CheckoutProduct implements Parcelable {
     private double price;
     private int quantity;
 
-    public CheckoutProduct(int pid,String name, double price, int quantity) {
+    private int storeId;
+
+    public CheckoutProduct(int pid, String name, double price, int quantity, int storeId) {
         this.pid = pid;
         this.name = name;
         this.price = price;
         this.quantity = quantity;
+        this.storeId = storeId;
     }
 
     protected CheckoutProduct(Parcel in) {
@@ -25,6 +28,21 @@ public class CheckoutProduct implements Parcelable {
         name = in.readString();
         price = in.readDouble();
         quantity = in.readInt();
+        storeId = in.readInt();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(pid);
+        dest.writeString(name);
+        dest.writeDouble(price);
+        dest.writeInt(quantity);
+        dest.writeInt(storeId);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<CheckoutProduct> CREATOR = new Creator<CheckoutProduct>() {
@@ -71,16 +89,11 @@ public class CheckoutProduct implements Parcelable {
         this.quantity = quantity;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public int getStoreId() {
+        return storeId;
     }
 
-    @Override
-    public void writeToParcel(@NonNull Parcel dest, int flags) {
-        dest.writeInt(pid);
-        dest.writeString(name);
-        dest.writeDouble(price);
-        dest.writeInt(quantity);
+    public void setStoreId(int storeId) {
+        this.storeId = storeId;
     }
 }

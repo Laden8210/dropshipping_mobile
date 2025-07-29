@@ -27,8 +27,9 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
         void onQuantityChanged(String productId, int newQuantity);
     }
 
+
     public interface OnSelectionChangedListener {
-        void onSelectionChanged(String productId, boolean isSelected);
+        void onSelectionChanged(String productId, String name, double price, int quantity, boolean isSelected);
     }
 
     public CartProductAdapter(Context context, List<CartProduct> products,
@@ -80,13 +81,20 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
                 .into(holder.ivProduct);
         holder.tvProductName.setText(product.getName());
         holder.tvAttributes.setText(product.getAttributes());
-        holder.tvPrice.setText(String.format("$%.2f", product.getPrice()));
+        holder.tvPrice.setText(String.format("₱%.2f", product.getPrice()));
         holder.tvQuantity.setText(String.valueOf(product.getQuantity()));
         holder.cbProduct.setChecked(product.isSelected());
 
         holder.cbProduct.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            product.setSelected(isChecked);
             if (selectionListener != null) {
-                selectionListener.onSelectionChanged(product.getId(), isChecked);
+                selectionListener.onSelectionChanged(
+                        product.getId(),
+                        product.getName(),
+                        product.getPrice(),
+                        product.getQuantity(),
+                        isChecked
+                );
             }
         });
 

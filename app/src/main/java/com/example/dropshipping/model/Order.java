@@ -21,6 +21,9 @@ public class Order {
 
     @SerializedName("status")
     private String status;
+
+    @SerializedName("tracking_number")
+    private String trackingNumber;
     @SerializedName("items")
     private List<OrderItem> items = new ArrayList<>();
 
@@ -71,5 +74,13 @@ public class Order {
 
     public void setItems(List<OrderItem> items) {
         this.items = items;
+    }
+
+    public String getTrackingNumber() {
+        return trackingNumber;
+    }
+
+    public void setTrackingNumber(String trackingNumber) {
+        this.trackingNumber = trackingNumber;
     }
 }

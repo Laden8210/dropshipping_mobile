@@ -1,0 +1,25 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tvOrderNumber"
+        style="@style/SectionHeader"
+        android:textStyle="bold"
+        android:textColor="@color/primary_color"/>
+
+    <TextView
+        android:id="@+id/tvOrderDate"
+        style="@style/InfoText"/>
+
+    <TextView
+        android:id="@+id/tvTotalAmount"
+        style="@style/InfoText"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/tvTrackingNumber"
+        style="@style/InfoText"
+        android:layout_marginTop="8dp"/>
+</LinearLayout>

@@ -2,6 +2,7 @@ package com.example.dropshipping.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import com.example.dropshipping.view.OrderDetailActivity;
 import com.example.dropshipping.R;
 import com.example.dropshipping.model.Order;
 import com.example.dropshipping.model.OrderItem;
+import com.example.dropshipping.view.TrackingDetailActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -25,7 +27,7 @@ import java.util.Locale;
 
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> {
     private List<Order> orders;
-private Context context;
+    private Context context;
 
     public OrderAdapter(List<Order> orders, Context context) {
         this.orders = orders;
@@ -77,9 +79,19 @@ private Context context;
             context.startActivity(intent);
         });
 
-        holder.btnTrack.setOnClickListener(v -> {
-            Toast.makeText(context, "Track order: " + order.getOrderNumber(), Toast.LENGTH_SHORT).show();
-        });
+        if (order.getTrackingNumber() == null || order.getTrackingNumber().isEmpty()) {
+            holder.btnTrack.setVisibility(View.GONE);
+        } else {
+            holder.btnTrack.setVisibility(View.VISIBLE);
+            holder.btnTrack.setOnClickListener(v -> {
+                Intent intent = new Intent(context, TrackingDetailActivity.class);
+                intent.putExtra("tracking_number", order.getTrackingNumber());
+                Log.d("OrderAdapter", "Tracking number: " + order.getTrackingNumber());
+                context.startActivity(intent);
+            });
+        }
+
+
     }
 
     @Override

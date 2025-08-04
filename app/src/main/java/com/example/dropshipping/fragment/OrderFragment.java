@@ -123,6 +123,7 @@ public class OrderFragment extends Fragment implements SwipeRefreshLayout.OnRefr
 
             order.setCreatedAt(orderObj.getString("created_at"));
             order.setStatus(orderObj.getString("status"));
+            order.setTrackingNumber(orderObj.optString("tracking_number", ""));
 
             Log.d("OrderFragment", "Order ID: " + order.getOrderId() + ", Status: " + order.getStatus() + ", Total: " + order.getTotalAmount());
 

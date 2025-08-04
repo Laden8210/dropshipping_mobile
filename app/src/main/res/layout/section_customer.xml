@@ -1,0 +1,21 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        style="@style/SectionHeader"
+        android:text="Customer"/>
+
+    <TextView
+        android:id="@+id/tvCustomerName"
+        style="@style/InfoText"/>
+
+    <TextView
+        android:id="@+id/tvCustomerEmail"
+        style="@style/InfoText"/>
+
+    <TextView
+        android:id="@+id/tvCustomerPhone"
+        style="@style/InfoText"/>
+</LinearLayout>

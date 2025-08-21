@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -142,10 +143,31 @@ public class OrderDetailActivity extends AppCompatActivity {
 
     private void populateOrderDetails(JSONObject orderData) throws JSONException {
         // Order info
+
+
+        Log.d("OrderDetailActivity", "Populating order details");
+        fabTrack.setOnClickListener(v -> {
+            Log.d("OrderDetailActivity", "Track button clicked");
+            Intent intent = new Intent(OrderDetailActivity.this, TrackingDetailActivity.class);
+
+            try {
+                if (orderData != null && orderData.has("tracking_number")) {
+                    String trackingNumber = orderData.getString("tracking_number");
+                    intent.putExtra("tracking_number", trackingNumber);
+                } else {
+                    Log.e("OrderDetailActivity", "Tracking number not available");
+                }
+            } catch (JSONException ex) {
+                Log.e("OrderDetailActivity", "Error parsing tracking number", ex);
+            }
+
+            startActivity(intent);
+        });
+
         tvOrderNumber.setText(orderData.getString("order_number"));
         chipStatus.setText(orderData.getString("status"));
         tvOrderDate.setText(formatOrderDate(orderData.getString("created_at")));
-        tvPaymentMethod.setText(getPaymentMethodDisplay(orderData.getString("payment_method")));
+//        tvPaymentMethod.setText(getPaymentMethodDisplay(orderData.getString("payment_method")));
         tvTrackingNumber.setText(orderData.getString("tracking_number"));
 
         // Address
@@ -198,12 +220,6 @@ public class OrderDetailActivity extends AppCompatActivity {
         rvStatusTimeline.setLayoutManager(new LinearLayoutManager(this));
         rvStatusTimeline.setAdapter(timelineAdapter);
 
-        // Track button
-        fabTrack.setOnClickListener(v -> {
-//            Intent intent = new Intent(this, TrackingActivity.class);
-//            intent.putExtra("tracking_number", orderData.getString("tracking_number"));
-//            startActivity(intent);
-        });
 
         // Update status chip color
         updateStatusChip(orderData.getString("status"));

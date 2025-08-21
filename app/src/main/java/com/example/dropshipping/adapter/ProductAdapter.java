@@ -44,7 +44,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     public void onBindViewHolder(ProductViewHolder holder, int position) {
         ProductItem item = productItem.get(position);
         holder.tvProductName.setText(item.getProductName());
-        holder.tvPrice.setText("₱" + item.getSellingPrice());
+        holder.tvPrice.setText(String.format("₱%.2f", (double) item.getSellingPrice()));
 
         if (item.getPrimaryImage() != null && !item.getPrimaryImage().isEmpty()) {
             Glide.with(context)

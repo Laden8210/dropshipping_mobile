@@ -23,6 +23,15 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".view.StoreActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.AddressBookActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.EditProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.TrackingDetailActivity"
             android:exported="false" />
         <activity

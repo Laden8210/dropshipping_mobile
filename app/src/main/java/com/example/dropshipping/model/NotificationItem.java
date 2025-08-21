@@ -13,7 +13,7 @@ public class NotificationItem {
     private String message;
     private Date timestamp;
     private boolean isRead;
-    private String iconUrl; // Optional for custom icons
+    private String iconUrl;
 
     public NotificationItem(String id, Type type, String title, String message, Date timestamp) {
         this.id = id;

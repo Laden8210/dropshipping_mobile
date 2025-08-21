@@ -111,27 +111,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <!-- Order History -->
-                    <LinearLayout
-                        android:id="@+id/btnOrderHistory"
-                        style="@style/SettingItemStyle"
-                        android:drawableStart="@drawable/ic_history"
-                        android:drawablePadding="16dp">
 
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Order History"
-                            android:textSize="16sp"/>
-
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:src="@drawable/ic_chevron_right"/>
-                    </LinearLayout>
-
-                    <!-- Address Book -->
                     <LinearLayout
                         android:id="@+id/btnAddressBook"
                         style="@style/SettingItemStyle"
@@ -152,24 +132,6 @@
                     </LinearLayout>
 
                     <!-- Notifications -->
-                    <LinearLayout
-                        android:id="@+id/btnNotifications"
-                        style="@style/SettingItemStyle"
-                        android:drawableStart="@drawable/ic_notifications"
-                        android:drawablePadding="16dp">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Notifications"
-                            android:textSize="16sp"/>
-
-                        <Switch
-                            android:id="@+id/switchNotifications"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
-                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -203,25 +165,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <!-- Help Center -->
-                    <LinearLayout
-                        android:id="@+id/btnHelpCenter"
-                        style="@style/SettingItemStyle"
-                        android:drawableStart="@drawable/ic_help"
-                        android:drawablePadding="16dp">
 
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Help Center"
-                            android:textSize="16sp"/>
-
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:src="@drawable/ic_chevron_right"/>
-                    </LinearLayout>
 
                     <!-- Contact Us -->
                     <LinearLayout

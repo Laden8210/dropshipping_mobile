@@ -1,6 +1,5 @@
 package com.example.dropshipping.adapter;
 
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,10 @@ import com.example.dropshipping.R;
 import com.example.dropshipping.model.NotificationItem;
 import com.example.dropshipping.util.TimeUtils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class NotificationAdapter extends ListAdapter<NotificationItem, NotificationAdapter.NotificationViewHolder> {
 
@@ -31,14 +33,12 @@ public class NotificationAdapter extends ListAdapter<NotificationItem, Notificat
             new DiffUtil.ItemCallback<NotificationItem>() {
                 @Override
                 public boolean areItemsTheSame(@NonNull NotificationItem oldItem, @NonNull NotificationItem newItem) {
-                    return oldItem.getId().equals(newItem.getId());
+                    return oldItem.getId() == newItem.getId();
                 }
 
                 @Override
                 public boolean areContentsTheSame(@NonNull NotificationItem oldItem, @NonNull NotificationItem newItem) {
-                    return oldItem.getTitle().equals(newItem.getTitle()) &&
-                            oldItem.getMessage().equals(newItem.getMessage()) &&
-                            oldItem.getTimestamp().equals(newItem.getTimestamp()) &&
+                    return oldItem.getId() == newItem.getId() &&
                             oldItem.isRead() == newItem.isRead();
                 }
             };
@@ -64,6 +64,9 @@ public class NotificationAdapter extends ListAdapter<NotificationItem, Notificat
         private final TextView tvNotificationTime;
         private final View indicatorUnread;
 
+        // Date formatter for parsing the API response
+        private final SimpleDateFormat apiDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+
         public NotificationViewHolder(@NonNull View itemView) {
             super(itemView);
             ivNotificationIcon = itemView.findViewById(R.id.ivNotificationIcon);
@@ -76,33 +79,60 @@ public class NotificationAdapter extends ListAdapter<NotificationItem, Notificat
         public void bind(NotificationItem notification, OnNotificationClickListener listener) {
             // Set icon based on notification type
             int iconRes = R.drawable.ic_notifications;
-            switch (notification.getType()) {
-//                case ORDER:
-//                    iconRes = R.drawable.ic_order;
-//                    break;
-//                case PROMOTION:
-//                    iconRes = R.drawable.ic_promotion;
-//                    break;
-//                case SYSTEM:
-//                    iconRes = R.drawable.ic_system;
-//                    break;
+
+            NotificationItem.NotificationType type = notification.getType();
+            switch (type) {
+                case ORDER:
+                    iconRes = R.drawable.ic_order;
+                    break;
+                case PAYMENT:
+                    iconRes = R.drawable.ic_payment;
+                    break;
+
+                case ACCOUNT:
+                    iconRes = R.drawable.ic_account;
+                    break;
+                case GENERAL:
+                default:
+                    iconRes = R.drawable.ic_notifications;
+                    break;
             }
             ivNotificationIcon.setImageResource(iconRes);
 
             tvNotificationTitle.setText(notification.getTitle());
             tvNotificationMessage.setText(notification.getMessage());
-            tvNotificationTime.setText(TimeUtils.getRelativeTime(notification.getTimestamp()));
+
+            // Parse the createdAt string to display relative time
+            String createdAt = notification.getCreatedAt();
+            if (createdAt != null && !createdAt.isEmpty()) {
+                try {
+                    Date date = apiDateFormat.parse(createdAt);
+                    if (date != null) {
+                        tvNotificationTime.setText(TimeUtils.getRelativeTime(date));
+                    } else {
+                        tvNotificationTime.setText("Recently");
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    tvNotificationTime.setText("Recently");
+                }
+            } else {
+                tvNotificationTime.setText("Recently");
+            }
 
             // Show unread indicator
             indicatorUnread.setVisibility(notification.isRead() ? View.GONE : View.VISIBLE);
 
             // Handle item click
             itemView.setOnClickListener(v -> {
-                listener.onNotificationClick(notification);
+                if (listener != null) {
+                    listener.onNotificationClick(notification);
+                }
                 // Mark as read when clicked
                 if (!notification.isRead()) {
-                    notification.setRead(true);
+                    notification.markAsRead();
                     indicatorUnread.setVisibility(View.GONE);
+                    // You might want to notify the server about the read status
                 }
             });
         }

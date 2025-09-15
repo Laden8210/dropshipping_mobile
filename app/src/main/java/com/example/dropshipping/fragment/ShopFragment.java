@@ -62,18 +62,47 @@ public class ShopFragment extends Fragment {
     }
 
     private void loadShopByStore() {
-        List<StoreItem> shopByStores = new ArrayList<>();
-        shopByStores.add(new StoreItem());
-        shopByStores.add(new StoreItem());
-        shopByStores.add(new StoreItem());
-        shopByStores.add(new StoreItem());
+        try{
+            new PostTask(getContext(), new PostCallback() {
+                @Override
+                public void onPostSuccess(String responseData) {
+                    try {
 
-        StoreAdapter storeAdapter = new StoreAdapter(getContext(), shopByStores);
+                        Gson gson = new Gson();
+                        JSONObject response = new JSONObject(responseData);
 
-        rvShopByStore.setAdapter(storeAdapter);
-        rvShopByStore.setHasFixedSize(true);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        rvShopByStore.setLayoutManager(layoutManager);
+                        if (response.has("data")) {
+                            JSONArray storeArray = response.getJSONArray("data");
+
+                            Type listType = new TypeToken<List<StoreItem>>() {}.getType();
+                            List<StoreItem> shopByStores = gson.fromJson(storeArray.toString(), listType);
+
+                            StoreAdapter storeAdapter = new StoreAdapter(getContext(), shopByStores);
+                            rvShopByStore.setAdapter(storeAdapter);
+                            rvShopByStore.setHasFixedSize(true);
+                            LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+                            rvShopByStore.setLayoutManager(layoutManager);
+                        } else {
+                            Messenger.showAlertDialog(getContext(), "No Stores", "No stores found.", "OK").show();
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Messenger.showAlertDialog(getContext(), "Parse Error", "Failed to parse store data.", "OK").show();
+                    }
+                }
+
+                @Override
+                public void onPostError(String errorMessage) {
+                    Messenger.showAlertDialog(getContext(), "Error", errorMessage, "Ok").show();
+                }
+            }, "error", "stores/get-stores.php").execute(new JSONObject());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+
 
     }
 

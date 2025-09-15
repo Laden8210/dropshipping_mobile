@@ -1,6 +1,9 @@
 package com.example.dropshipping.api;
 
 public class ApiAddress {
-    public static final String url = "http://192.168.68.113/dropshipping/api/";
-    public static final String imageUrl =  "http://192.168.68.113/dropshipping/public/images/products/";
+
+    public final static String baseUrl = "http://192.168.68.113/dropshipping/";
+    public static final String url = baseUrl +"api/";
+    public static final String imageUrl =  baseUrl +"public/images/products/";
+    public static final String storeUrl =  baseUrl +"public/images/store/";
 }

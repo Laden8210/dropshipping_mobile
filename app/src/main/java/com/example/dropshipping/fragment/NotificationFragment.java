@@ -17,10 +17,19 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.dropshipping.R;
 import com.example.dropshipping.adapter.NotificationAdapter;
+import com.example.dropshipping.api.PostCallback;
+import com.example.dropshipping.api.PostTask;
 import com.example.dropshipping.model.NotificationItem;
+import com.example.dropshipping.util.Messenger;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -91,63 +100,55 @@ public class NotificationFragment extends Fragment implements
     }
 
     private void loadNotifications() {
-        swipeRefreshLayout.postDelayed(() -> {
-            notifications.clear();
-            notifications.addAll(generateSampleNotifications());
+        swipeRefreshLayout.setRefreshing(true);
 
-            adapter.submitList(new ArrayList<>(notifications));
-            updateUIState();
-        }, 1000);
+        try {
+            new PostTask(getContext(), new PostCallback() {
+                @Override
+                public void onPostSuccess(String responseData) {
+                    try {
+                        notifications.clear();
+
+                        JSONObject response = new JSONObject(responseData);
+
+                        if (response.has("data")) {
+                            JSONArray notificationArray = response.getJSONArray("data");
+                            Gson gson = new Gson();
+                            Type listType = new TypeToken<List<NotificationItem>>() {}.getType();
+                            List<NotificationItem> fetchedNotifications = gson.fromJson(notificationArray.toString(), listType);
+
+                            notifications.addAll(fetchedNotifications);
+                        } else {
+                            Messenger.showAlertDialog(getContext(), "No Notification", "No notifications found.", "OK").show();
+                        }
+
+                        adapter.submitList(new ArrayList<>(notifications));
+                        updateUIState();
+                        swipeRefreshLayout.setRefreshing(false);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Messenger.showAlertDialog(getContext(), "Parse Error", "Failed to parse notification data.", "OK").show();
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                }
+
+                @Override
+                public void onPostError(String errorMessage) {
+                    Messenger.showAlertDialog(getContext(), "Error", errorMessage, "Ok").show();
+                    swipeRefreshLayout.setRefreshing(false);
+
+                }
+            }, "error", "notifications/get-notification.php").execute(new JSONObject());
+        } catch (Exception e) {
+            e.printStackTrace();
+            swipeRefreshLayout.setRefreshing(false);
+
+        }
     }
 
-    private List<NotificationItem> generateSampleNotifications() {
-        Calendar calendar = Calendar.getInstance();
-        String[] orderIds = {"#ORD-12987", "#ORD-45612", "#ORD-78945"};
-        String[] promotions = {"Summer Sale", "Flash Deal", "New Arrivals"};
 
-        return Arrays.asList(
-                new NotificationItem(
-                        "1",
-                        NotificationItem.Type.ORDER,
-                        "Order Shipped",
-                        "Your order " + orderIds[random.nextInt(orderIds.length)] + " has been shipped",
-                        getPastDate(calendar, random.nextInt(60))
-                ),
-                new NotificationItem(
-                        "2",
-                        NotificationItem.Type.PROMOTION,
-                        "Special Offer",
-                        promotions[random.nextInt(promotions.length)] + " - Get 20% off on selected items",
-                        getPastDate(calendar, random.nextInt(120))
-                ),
-                new NotificationItem(
-                        "3",
-                        NotificationItem.Type.SYSTEM,
-                        "App Update",
-                        "New version 1.2.3 is available with bug fixes",
-                        getPastDate(calendar, random.nextInt(180))
-                ),
-                new NotificationItem(
-                        "4",
-                        NotificationItem.Type.ORDER,
-                        "Order Delivered",
-                        "Your order " + orderIds[random.nextInt(orderIds.length)] + " has been delivered",
-                        getPastDate(calendar, random.nextInt(240))
-                ),
-                new NotificationItem(
-                        "5",
-                        NotificationItem.Type.PROMOTION,
-                        "Limited Time Offer",
-                        "Last chance! 30% off ends tonight",
-                        getPastDate(calendar, random.nextInt(300))
-                )
-        );
-    }
 
-    private Date getPastDate(Calendar calendar, int minutesAgo) {
-        calendar.add(Calendar.MINUTE, -minutesAgo);
-        return calendar.getTime();
-    }
 
     private void clearAllNotifications() {
         notifications.clear();
@@ -169,8 +170,22 @@ public class NotificationFragment extends Fragment implements
 
     @Override
     public void onNotificationClick(NotificationItem notification) {
-        Toast.makeText(requireContext(),
-                "Notification clicked: " + notification.getTitle(),
-                Toast.LENGTH_SHORT).show();
+        try {
+         JSONObject payload = new JSONObject();
+            payload.put("notification_id", notification.getId());
+            new PostTask(getContext(), new PostCallback() {
+                @Override
+                public void onPostSuccess(String responseData) {
+                    Messenger.showAlertDialog(getContext(), "Success", notification.getMessage(), "OK").show();
+                }
+
+                @Override
+                public void onPostError(String errorMessage) {
+                    Messenger.showAlertDialog(getContext(), "Error", errorMessage, "Ok").show();
+                }
+            }, "error", "notifications/mark-as-read.php").execute(payload);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

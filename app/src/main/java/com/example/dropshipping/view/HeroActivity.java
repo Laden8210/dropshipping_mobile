@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.dropshipping.R;
+import com.example.dropshipping.adapter.ProductSearchAdapter;
 import com.example.dropshipping.fragment.AccountFragment;
 import com.example.dropshipping.fragment.OrderFragment;
 import com.example.dropshipping.fragment.NotificationFragment;
@@ -19,16 +20,21 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class HeroActivity extends AppCompatActivity {
 
     private CardView cvCart;
+    private CardView cvSearch;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_hero);
         cvCart = findViewById(R.id.cvCart);
-
+        cvSearch = findViewById(R.id.cvSearch);
         cvCart.setOnClickListener(v -> {
 
             startActivity(new Intent(HeroActivity.this, CartActivity.class));
+        });
+        cvSearch.setOnClickListener(v -> {
+
+            startActivity(new Intent(HeroActivity.this, SearchProductActivity.class));
         });
 
 

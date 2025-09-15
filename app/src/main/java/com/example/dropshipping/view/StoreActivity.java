@@ -48,7 +48,7 @@ public class StoreActivity extends AppCompatActivity {
 
         context = this;
 
-        long storeId = getIntent().getLongExtra("STORE_ID", -1);
+        long storeId = getIntent().getIntExtra("store_id", -1);
 
         initViews();
         setupToolbar();
@@ -104,7 +104,7 @@ public class StoreActivity extends AppCompatActivity {
     private void initViews() {
         rvProducts = findViewById(R.id.rvProducts);
         rvProducts.setLayoutManager(new GridLayoutManager(this, 2));
-        productAdapter = new ProductAdapter(this, productList); // Pass context to adapter
+        productAdapter = new ProductAdapter(this, productList);
         rvProducts.setAdapter(productAdapter);
     }
 
@@ -158,7 +158,7 @@ public class StoreActivity extends AppCompatActivity {
                     bindStoreData();
                     Messenger.showAlertDialog(context, "Error", "Using demo data: " + errorMessage, "OK").show();
                 }
-            }, "error", "store/retrieve-store.php").execute(requestData);
+            }, "error", "stores/retrieve-store.php").execute(requestData);
         } catch (Exception e) {
             e.printStackTrace();
             // Fallback to dummy data on exception

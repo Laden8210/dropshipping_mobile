@@ -17,6 +17,8 @@ import androidx.fragment.app.Fragment;
 
 import com.example.dropshipping.MainActivity;
 import com.example.dropshipping.R;
+import com.example.dropshipping.api.PostCallback;
+import com.example.dropshipping.api.PostTask;
 import com.example.dropshipping.util.Messenger;
 import com.example.dropshipping.view.AddressBookActivity;
 import com.example.dropshipping.view.CustomerSupportActivity;
@@ -24,9 +26,11 @@ import com.example.dropshipping.view.EditProfileActivity;
 
 import com.google.android.material.button.MaterialButton;
 
+import org.json.JSONObject;
+
 public class AccountFragment extends Fragment {
 
-    private LinearLayout btnContactUs, btnAboutApp, btnAddressBook;
+    private LinearLayout btnContactUs, btnAboutApp;
     private MaterialButton btnEditProfile, btnLogout;
     private TextView tvUserName, tvUserEmail, tvAppVersion;
 
@@ -61,7 +65,7 @@ public class AccountFragment extends Fragment {
         // LinearLayout clickable items
         btnContactUs = view.findViewById(R.id.btnContactUs);
         btnAboutApp = view.findViewById(R.id.btnAboutApp);
-        btnAddressBook = view.findViewById(R.id.btnAddressBook);
+      //  btnAddressBook = view.findViewById(R.id.btnAddressBook);
 
         // TextViews
         tvUserName = view.findViewById(R.id.tvUserName);
@@ -85,24 +89,40 @@ public class AccountFragment extends Fragment {
         btnAboutApp.setOnClickListener(v -> showAboutApp());
 
         // Address Book
-        btnAddressBook.setOnClickListener(v -> navigateToAddressBook());
+       // btnAddressBook.setOnClickListener(v -> navigateToAddressBook());
     }
 
     private void loadUserData() {
-        // TODO: Load actual user data from your database or shared preferences
-        // For now, using placeholder data
-        tvUserName.setText("John Doe");
-        tvUserEmail.setText("john.doe@example.com");
+        new PostTask(getContext(), new PostCallback() {
+            @Override
+            public void onPostSuccess(String responseData) {
+                try {
+                    JSONObject response = new JSONObject(responseData);
+                    if (response.getString("status").equalsIgnoreCase("success")) {
+                        JSONObject user = response.getJSONObject("data");
+                        String fullName = user.getString("full_name");
+                        String email = user.getString("email");
 
-        // Set app version (example)
-        try {
-            String versionName = requireContext().getPackageManager()
-                    .getPackageInfo(requireContext().getPackageName(), 0)
-                    .versionName;
-            tvAppVersion.setText("v" + versionName);
-        } catch (Exception e) {
-            tvAppVersion.setText("v1.0.0");
-        }
+                        tvUserName.setText(fullName);
+                        tvUserEmail.setText(email);
+
+                        // Set app version
+                        String versionName = requireContext().getPackageManager()
+                                .getPackageInfo(requireContext().getPackageName(), 0)
+                                .versionName;
+                        tvAppVersion.setText(getString(R.string.version, versionName));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+
+                }
+            }
+
+            @Override
+            public void onPostError(String errorMessage) {
+
+            }
+        }, "get_user_profile", "auth/validate.php").execute(new JSONObject());
     }
 
     private void navigateToEditProfile() {

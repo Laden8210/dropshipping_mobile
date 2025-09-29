@@ -218,5 +218,15 @@
             android:visibility="gone" />
 
     </FrameLayout>
+    <!-- Add this before the closing tag of your root layout -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabCreateTicket"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:src="@android:drawable/ic_input_add"
+        android:contentDescription="Create new ticket"
+        app:backgroundTint="@android:color/holo_blue_dark" />
 
 </LinearLayout>

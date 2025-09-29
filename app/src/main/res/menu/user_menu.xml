@@ -5,12 +5,12 @@
     <item
         android:id="@+id/menu_shop"
         android:title="Shop"
-        android:icon="@drawable/baseline_discount_24"/>
+        android:icon="@drawable/dashboard"/>
 
     <item
         android:id="@+id/menu_cart"
         android:title="Order History"
-        android:icon="@drawable/baseline_discount_24"/>
+        android:icon="@drawable/checkout"/>
 
     <item
         android:id="@+id/menu_notification"

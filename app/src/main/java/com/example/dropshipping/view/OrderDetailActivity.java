@@ -6,9 +6,11 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,6 +60,8 @@ public class OrderDetailActivity extends AppCompatActivity {
     private ExtendedFloatingActionButton fabTrack;
     private ReviewAdapter reviewAdapter;
 
+    private long orderId = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +72,7 @@ public class OrderDetailActivity extends AppCompatActivity {
         setupToolbar();
 
         // Get order ID from intent
-        long orderId = getIntent().getLongExtra("order_id", -1);
+        orderId = getIntent().getLongExtra("order_id", -1);
         if (orderId != -1) {
             fetchOrderDetails(orderId);
         } else {
@@ -262,16 +266,20 @@ public class OrderDetailActivity extends AppCompatActivity {
         // Close button
         btnClose.setOnClickListener(v -> bottomSheetDialog.dismiss());
 
-        bottomSheetDialog.show();
-
         // Initialize review submission elements
-        RatingBar ratingBarReview = bottomSheetView.findViewById(R.id.ratingBarReview);
+        Spinner spinnerRating = bottomSheetView.findViewById(R.id.spinnerRating);
         TextInputEditText etReview = bottomSheetView.findViewById(R.id.etReview);
         MaterialButton btnSubmitReview = bottomSheetView.findViewById(R.id.btnSubmitReview);
 
+        // Setup rating spinner
+        setupRatingSpinner(spinnerRating);
+
+        bottomSheetDialog.show();
+
         // Submit review button click
         btnSubmitReview.setOnClickListener(v -> {
-            float rating = ratingBarReview.getRating();
+            int selectedPosition = spinnerRating.getSelectedItemPosition();
+            float rating = selectedPosition + 1; // Convert to 1-5 rating
             String reviewText = etReview.getText().toString().trim();
 
             if (reviewText.isEmpty()) {
@@ -284,7 +292,7 @@ public class OrderDetailActivity extends AppCompatActivity {
                 public void onSuccess() {
                     Toast.makeText(OrderDetailActivity.this, "Review submitted!", Toast.LENGTH_SHORT).show();
                     // Clear form
-                    ratingBarReview.setRating(5);
+                    spinnerRating.setSelection(4); // Default to 5 stars
                     etReview.setText("");
 
                     loadReviews(item.getProductId());
@@ -296,7 +304,28 @@ public class OrderDetailActivity extends AppCompatActivity {
                 }
             });
         });
+    }
 
+    private void setupRatingSpinner(Spinner spinner) {
+        // Create rating options with stars
+        String[] ratingOptions = {
+                "⭐ 1 Star",
+                "⭐⭐ 2 Stars",
+                "⭐⭐⭐ 3 Stars",
+                "⭐⭐⭐⭐ 4 Stars",
+                "⭐⭐⭐⭐⭐ 5 Stars"
+        };
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_spinner_item,
+                ratingOptions
+        );
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
+        // Default to 5 stars
+        spinner.setSelection(4);
     }
 
     private void submitReview(long productId, float rating, String review, ReviewSubmitCallback callback) {
@@ -305,6 +334,7 @@ public class OrderDetailActivity extends AppCompatActivity {
             reviewJson.put("product_id", productId);
             reviewJson.put("rating", rating);
             reviewJson.put("review", review);
+            reviewJson.put("order_id", orderId);
             // Add user ID if needed
 
             new PostTask(this, new PostCallback() {
@@ -328,7 +358,7 @@ public class OrderDetailActivity extends AppCompatActivity {
                 public void onPostError(String errorMessage) {
                     callback.onError(errorMessage);
                 }
-            }, "error", "reviews/submit-review.php").execute(reviewJson);
+            }, "error", "feedback/submit.php").execute(reviewJson);
         } catch (Exception e) {
             e.printStackTrace();
             callback.onError("Error creating review request");

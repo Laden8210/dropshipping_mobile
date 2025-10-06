@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.dropshipping.R;
+import com.example.dropshipping.api.ApiAddress;
 import com.example.dropshipping.model.CartProduct;
 
 import java.util.List;
@@ -76,7 +77,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
         CartProduct product = products.get(position);
 
         Glide.with(holder.ivProduct.getContext())
-                .load(product.getImageRes())
+                .load( ApiAddress.imageUrl + product.getImageRes())
                 .placeholder(R.drawable.product_sample)
                 .into(holder.ivProduct);
         holder.tvProductName.setText(product.getName());

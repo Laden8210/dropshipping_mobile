@@ -192,6 +192,7 @@ public class OrderDetailActivity extends AppCompatActivity {
         for (int i = 0; i < itemsArray.length(); i++) {
             JSONObject item = itemsArray.getJSONObject(i);
             OrderItem orderItem = new OrderItem();
+            orderItem.setProductId(item.getLong("product_id"));
             orderItem.setName(item.getString("product_name"));
             orderItem.setPrice(item.getDouble("price"));
             orderItem.setQuantity(item.getInt("quantity"));
@@ -380,19 +381,53 @@ public class OrderDetailActivity extends AppCompatActivity {
 
         List<Review> reviews = new ArrayList<>();
 
-        Review review1 = new Review();
-        review1.setReviewerName("John Smith");
-        review1.setRating(4.5f);
-        review1.setReviewDate("2025-07-15");
-        review1.setReviewText("Great product! Works as described.");
-        reviews.add(review1);
+        try {
 
-        Review review2 = new Review();
-        review2.setReviewerName("Sarah Johnson");
-        review2.setRating(5f);
-        review2.setReviewDate("2025-07-10");
-        review2.setReviewText("Absolutely love this product. Highly recommend!");
-        reviews.add(review2);
+            JSONObject requestJson = new JSONObject();
+            requestJson.put("product_id", productId);
+            new PostTask(this, new PostCallback() {
+                @Override
+                public void onPostSuccess(String responseData) {
+                    try {
+                        JSONObject response = new JSONObject(responseData);
+                        if (response.getString("status").equals("success")) {
+                            JSONArray reviewsArray = response.getJSONArray("data");
+                            List<Review> fetchedReviews = new ArrayList<>();
+                            for (int i = 0; i < reviewsArray.length(); i++) {
+                                JSONObject reviewObj = reviewsArray.getJSONObject(i);
+                                Review review = new Review();
+                                String fullName = reviewObj.getString("first_name") + " " + reviewObj.getString("last_name");
+                                review.setReviewerName(fullName);
+                                review.setRating((float) reviewObj.getDouble("rating"));
+                                review.setReviewDate(reviewObj.getString("created_at"));
+                                review.setReviewText(reviewObj.getString("review"));
+                                fetchedReviews.add(review);
+                            }
+                            runOnUiThread(() -> {
+                                reviews.clear();
+                                reviews.addAll(fetchedReviews);
+                                if (reviewAdapter != null) {
+                                    reviewAdapter.notifyDataSetChanged();
+                                }
+                            });
+                        } else {
+                            String errorMessage = response.optString("message", "Failed to load reviews");
+                            Toast.makeText(OrderDetailActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Toast.makeText(OrderDetailActivity.this, "Error parsing reviews", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onPostError(String errorMessage) {
+                    Toast.makeText(OrderDetailActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                }
+            }, "error", "feedback/get-feedback.php").execute(new JSONObject().put("product_id", productId));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return reviews;
     }

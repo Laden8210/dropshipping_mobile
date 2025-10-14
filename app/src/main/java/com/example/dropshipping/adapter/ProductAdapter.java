@@ -22,8 +22,6 @@ import java.util.List;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
 
-
-
     private final Context context;
     private List<ProductItem> productItem;
 
@@ -43,9 +41,24 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     @Override
     public void onBindViewHolder(ProductViewHolder holder, int position) {
         ProductItem item = productItem.get(position);
-        holder.tvProductName.setText(item.getProductName());
-        holder.tvPrice.setText(String.format("₱%.2f", (double) item.getSellingPrice()));
 
+        holder.tvProductName.setText(item.getProductName());
+        holder.tvPrice.setText(item.getDisplayPrice());
+
+        // Show stock status
+        if (item.hasStock()) {
+            holder.tvStock.setText(item.getStockStatus());
+            if (item.getTotalStock() < 10) {
+                holder.tvStock.setTextColor(context.getResources().getColor(R.color.orange));
+            } else {
+                holder.tvStock.setTextColor(context.getResources().getColor(R.color.green));
+            }
+        } else {
+            holder.tvStock.setText("Out of Stock");
+            holder.tvStock.setTextColor(context.getResources().getColor(R.color.red));
+        }
+
+        // Load image
         if (item.getPrimaryImage() != null && !item.getPrimaryImage().isEmpty()) {
             Glide.with(context)
                     .load(ApiAddress.imageUrl + item.getPrimaryImage())
@@ -55,11 +68,19 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             holder.imageView.setImageResource(R.drawable.product_sample);
         }
 
+        // Show category
+        holder.tvCategory.setText(item.getCategoryName());
+
         holder.cvProductItem.setOnClickListener(view -> {
-            Intent intent = new Intent(context, ProductDetailsActivity.class);
-            intent.putExtra("pid", item.getPid());
-            intent.putExtra("storeId", item.getStoreId());
-            context.startActivity(intent);
+            if (item.hasStock()) {
+                Intent intent = new Intent(context, ProductDetailsActivity.class);
+                intent.putExtra("pid", item.getPid());
+                intent.putExtra("storeId", item.getStoreId());
+                context.startActivity(intent);
+            } else {
+                // Show out of stock message
+                android.widget.Toast.makeText(context, "This product is currently out of stock", android.widget.Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
@@ -68,10 +89,15 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         return productItem != null ? productItem.size() : 0;
     }
 
+    public void updateList(List<ProductItem> newList) {
+        productItem = newList;
+        notifyDataSetChanged();
+    }
+
     public static class ProductViewHolder extends RecyclerView.ViewHolder {
         private CardView cvProductItem;
         private ImageView imageView;
-        private TextView tvProductName, tvPrice;
+        private TextView tvProductName, tvPrice, tvStock, tvCategory;
 
         public ProductViewHolder(View itemView) {
             super(itemView);
@@ -79,7 +105,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             imageView = itemView.findViewById(R.id.imageView);
             tvProductName = itemView.findViewById(R.id.tvProductName);
             tvPrice = itemView.findViewById(R.id.tvPrice);
+            tvStock = itemView.findViewById(R.id.tvStock);
+            tvCategory = itemView.findViewById(R.id.tvCategory);
         }
     }
-
 }

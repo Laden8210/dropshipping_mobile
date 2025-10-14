@@ -30,7 +30,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
 
 
     public interface OnSelectionChangedListener {
-        void onSelectionChanged(String productId, String name, double price, int quantity, boolean isSelected);
+        void onSelectionChanged(String cartId, String productId, String variantId, String name, double price, int quantity, double weight, double height, boolean isSelected);
     }
 
     public CartProductAdapter(Context context, List<CartProduct> products,
@@ -90,10 +90,14 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
             product.setSelected(isChecked);
             if (selectionListener != null) {
                 selectionListener.onSelectionChanged(
+                        product.getCartId(),
                         product.getId(),
+                        product.getVariantId(),
                         product.getName(),
                         product.getPrice(),
                         product.getQuantity(),
+                        product.getWeight(),
+                        product.getLength(),
                         isChecked
                 );
             }

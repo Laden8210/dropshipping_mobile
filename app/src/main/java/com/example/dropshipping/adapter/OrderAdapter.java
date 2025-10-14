@@ -1,24 +1,31 @@
 package com.example.dropshipping.adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.dropshipping.api.PostCallback;
+import com.example.dropshipping.api.PostTask;
 import com.example.dropshipping.view.OrderDetailActivity;
 import com.example.dropshipping.R;
 import com.example.dropshipping.model.Order;
 import com.example.dropshipping.model.OrderItem;
 import com.example.dropshipping.view.TrackingDetailActivity;
+
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -72,6 +79,18 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
         int textColor = getStatusTextColor(order.getStatus());
         holder.tvStatus.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), textColor));
 
+        if (order.getStatus().equalsIgnoreCase("delivered")) {
+            holder.actionButtonsLayout.setVisibility(View.VISIBLE);
+            holder.btnReturn.setOnClickListener(v -> {
+                processReturn(order);
+            });
+            holder.btnComplete.setOnClickListener(v -> {
+                processComplete(order);
+            });
+        } else {
+            holder.actionButtonsLayout.setVisibility(View.GONE);
+        }
+
 
         holder.btnViewDetails.setOnClickListener(v -> {
             Intent intent = new Intent(context, OrderDetailActivity.class);
@@ -94,6 +113,109 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
 
     }
 
+    public void processReturn(Order order) {
+        try {
+            JSONObject requestJson = new JSONObject();
+            requestJson.put("order_id", order.getOrderId());
+
+            new PostTask(context, new PostCallback() {
+                @Override
+                public void onPostSuccess(String responseData) {
+                    try {
+                        JSONObject response = new JSONObject(responseData);
+                        if (response.getString("status").equals("success")) {
+                            showAlertDialog("Success",
+                                    "Return process initiated for order " + order.getOrderNumber(),
+                                    "OK", null, null, null, true);
+                        } else {
+                            String errorMessage = response.optString("message", "Failed to initiate return");
+                            showAlertDialog("Error", errorMessage, "OK", null, null, null, true);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        showAlertDialog("Error",
+                                "Error initiating return for order " + order.getOrderNumber(),
+                                "OK", null, null, null, true);
+                    }
+                }
+
+                @Override
+                public void onPostError(String errorMessage) {
+                    showAlertDialog("Error", errorMessage, "OK", null, null, null, true);
+                }
+            }, "success", "order/initiate-return.php").execute(requestJson);
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlertDialog("Error",
+                    "Error initiating return for order " + order.getOrderNumber(),
+                    "OK", null, null, null, true);
+        }
+    }
+
+    // Helper method to show alert dialog
+    private void showAlertDialog(String title, String message, String positiveButtonText,
+                                 String negativeButtonText, DialogInterface.OnClickListener positiveListener,
+                                 DialogInterface.OnClickListener negativeListener, boolean cancelable) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(title)
+                .setMessage(message)
+                .setCancelable(cancelable);
+
+        // Set positive button
+        if (positiveButtonText != null) {
+            builder.setPositiveButton(positiveButtonText, positiveListener != null ?
+                    positiveListener : (dialog, which) -> dialog.dismiss());
+        }
+
+        // Set negative button
+        if (negativeButtonText != null) {
+            builder.setNegativeButton(negativeButtonText, negativeListener != null ?
+                    negativeListener : (dialog, which) -> dialog.dismiss());
+        }
+
+        builder.show();
+    }
+
+    public void processComplete(Order order) {
+        try {
+            JSONObject requestJson = new JSONObject();
+            requestJson.put("order_id", order.getOrderId());
+
+            new PostTask(context, new PostCallback() {
+                @Override
+                public void onPostSuccess(String responseData) {
+                    try {
+                        JSONObject response = new JSONObject(responseData);
+                        if (response.getString("status").equals("success")) {
+                            showAlertDialog("Success",
+                                    "Order " + order.getOrderNumber() + " marked as complete",
+                                    "OK", null, null, null, true);
+                        } else {
+                            String errorMessage = response.optString("message", "Failed to mark order as complete");
+                            showAlertDialog("Error", errorMessage, "OK", null, null, null, true);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        showAlertDialog("Error",
+                                "Error marking order " + order.getOrderNumber() + " as complete",
+                                "OK", null, null, null, true);
+                    }
+                }
+
+                @Override
+                public void onPostError(String errorMessage) {
+                    showAlertDialog("Error", errorMessage, "OK", null, null, null, true);
+                }
+            }, "success", "order/mark-complete.php").execute(requestJson);
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlertDialog("Error",
+                    "Error marking order " + order.getOrderNumber() + " as complete",
+                    "OK", null, null, null, true);
+        }
+    }
+
     @Override
     public int getItemCount() {
         return orders.size();
@@ -101,7 +223,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvOrderNumber, tvStatus, tvOrderDate, tvProductSummary, tvTotalAmount;
-        Button btnViewDetails, btnTrack;
+        Button btnViewDetails, btnTrack, btnReturn, btnComplete;
+        LinearLayout actionButtonsLayout;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -112,6 +235,9 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
             tvTotalAmount = itemView.findViewById(R.id.tvTotalAmount);
             btnViewDetails = itemView.findViewById(R.id.btnViewDetails);
             btnTrack = itemView.findViewById(R.id.btnTrack);
+            actionButtonsLayout = itemView.findViewById(R.id.actionButtonsLayout);
+            btnReturn = itemView.findViewById(R.id.btnReturn);
+            btnComplete = itemView.findViewById(R.id.btnComplete);
         }
     }
 

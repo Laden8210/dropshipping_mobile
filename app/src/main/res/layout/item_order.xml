@@ -97,5 +97,38 @@
                 android:layout_marginStart="8dp"
                 />
         </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/actionButtonsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp">
+
+            <Button
+                android:id="@+id/btnReturn"
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Return"
+                app:strokeColor="@color/red"
+                android:backgroundTint="@color/red"
+                android:textColor="@color/white"/>
+
+            <Button
+                android:id="@+id/btnComplete"
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Complete"
+                android:backgroundTint="@color/green_light"
+                android:layout_marginStart="8dp"
+                />
+        </LinearLayout>
+
+
+
     </LinearLayout>
 </androidx.cardview.widget.CardView>

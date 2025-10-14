@@ -2,6 +2,7 @@ package com.example.dropshipping.model;
 
 public class CartItem {
     private int cart_id;
+    private int variation_id;
     private int quantity;
     private String created_at;
     private String updated_at;
@@ -28,8 +29,9 @@ public class CartItem {
     }
 
 
-    public CartItem(int product_id, double price, int quantity, int storeId) {
+    public CartItem(int product_id, int variation_id, double price, int quantity, int storeId) {
         this.product_id = product_id;
+        this.variation_id = variation_id;
         this.price = price;
         this.quantity = quantity;
         this.storeId = storeId;
@@ -57,5 +59,27 @@ public class CartItem {
     public void setProduct_image(String product_image) { this.product_image = product_image; }
     public double getSelling_price() { return selling_price; }
 
+    public void setPrice(double price) {
+        this.price = price;
+    }
 
+    public void setProduct_id(int product_id) {
+        this.product_id = product_id;
+    }
+
+    public void setSelling_price(double selling_price) {
+        this.selling_price = selling_price;
+    }
+
+    public void setStoreId(int storeId) {
+        this.storeId = storeId;
+    }
+
+    public int getVariation_id() {
+        return variation_id;
+    }
+
+    public void setVariation_id(int variation_id) {
+        this.variation_id = variation_id;
+    }
 }

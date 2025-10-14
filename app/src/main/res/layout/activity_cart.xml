@@ -67,43 +67,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginTop="8dp">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Shipping"
-                        android:textSize="16sp"/>
-
-                    <TextView
-                        android:id="@+id/tvShippingTotal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="$9.98"
-                        android:textSize="16sp"/>
-                </LinearLayout>
+                    android:layout_marginTop="8dp"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginTop="8dp">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Tax"
-                        android:textSize="16sp"/>
-
-                    <TextView
-                        android:id="@+id/tvTax"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="$5.99"
-                        android:textSize="16sp"/>
-                </LinearLayout>
+                    android:layout_marginTop="8dp"/>
 
                 <View
                     android:layout_width="match_parent"

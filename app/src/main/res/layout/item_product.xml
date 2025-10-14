@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     app:cardCornerRadius="12dp"
-    app:cardElevation="2dp"
+    app:cardElevation="4dp"
     app:cardBackgroundColor="@android:color/white"
     app:contentPadding="0dp">
 
@@ -28,12 +28,26 @@
             android:adjustViewBounds="true"
             android:background="?attr/selectableItemBackgroundBorderless"/>
 
+        <!-- Category Badge -->
+        <TextView
+            android:id="@+id/tvCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/category_background"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="2dp"
+            android:text="Category"
+            android:textSize="10sp"
+            android:textColor="@color/white"
+            android:textStyle="bold"/>
+
         <!-- Product Name with constrained lines -->
         <TextView
             android:id="@+id/tvProductName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="8dp"
             android:text="Product Name"
             android:textSize="14sp"
             android:textStyle="bold"
@@ -47,10 +61,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            android:text="$0.00"
+            android:text="₱0.00 - ₱0.00"
             android:textSize="16sp"
             android:textColor="@color/price_green"
             android:textStyle="bold"/>
+
+        <!-- Stock Status -->
+        <TextView
+            android:id="@+id/tvStock"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="In Stock"
+            android:textSize="12sp"
+            android:textColor="@color/green"/>
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

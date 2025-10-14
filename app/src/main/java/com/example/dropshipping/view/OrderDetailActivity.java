@@ -60,12 +60,15 @@ public class OrderDetailActivity extends AppCompatActivity {
     private ExtendedFloatingActionButton fabTrack;
     private ReviewAdapter reviewAdapter;
 
+
     private long orderId = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_detail);
+
+
 
         // Initialize views
         initViews();
@@ -97,6 +100,7 @@ public class OrderDetailActivity extends AppCompatActivity {
         rvOrderItems = findViewById(R.id.rvOrderItems);
         rvStatusTimeline = findViewById(R.id.rvStatusTimeline);
         fabTrack = findViewById(R.id.fabTrack);
+
     }
 
     private void setupToolbar() {
@@ -203,6 +207,7 @@ public class OrderDetailActivity extends AppCompatActivity {
 
             orderItems.add(orderItem);
         }
+
 
         OrderItemAdapter itemAdapter = new OrderItemAdapter(orderItems, OrderDetailActivity.this, item -> {
             showProductDetailBottomSheet(item);

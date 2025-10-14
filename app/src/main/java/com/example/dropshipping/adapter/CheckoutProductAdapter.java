@@ -51,7 +51,7 @@ public class CheckoutProductAdapter extends RecyclerView.Adapter<CheckoutProduct
         CheckoutProduct product = productList.get(position);
 
         holder.productName.setText(product.getName());
-        holder.productPrice.setText(String.format("$%.2f", product.getPrice()));
+        holder.productPrice.setText(String.format("₱%.2f", product.getPrice()));
         holder.quantityText.setText(String.valueOf(product.getQuantity()));
 
         // Handle image loading with Glide/Picasso if needed

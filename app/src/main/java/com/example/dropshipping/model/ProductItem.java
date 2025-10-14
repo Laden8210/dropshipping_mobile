@@ -5,31 +5,35 @@ import java.util.List;
 
 public class ProductItem {
 
-
     @SerializedName("product_id")
     private int pid;
+
     @SerializedName("product_name")
     private String productName;
+
     @SerializedName("product_sku")
     private String productSku;
-    @SerializedName("product_weight")
-    private int productWeight;
+
     @SerializedName("status")
     private String status;
+
     @SerializedName("category_name")
     private String categoryName;
 
     @SerializedName("profit_margin")
     private String profitMargin;
 
-    @SerializedName("price")
-    private String price;
+    @SerializedName("min_price")
+    private String minPrice;
+
+    @SerializedName("max_price")
+    private String maxPrice;
 
     @SerializedName("currency")
     private String currency;
 
-    @SerializedName("change_date")
-    private String changeDate;
+    @SerializedName("total_stock")
+    private int totalStock;
 
     @SerializedName("primary_image")
     private String primaryImage;
@@ -40,21 +44,31 @@ public class ProductItem {
     @SerializedName("warehouse_address")
     private String warehouseAddress;
 
-    @SerializedName("current_stock")
-    private int currentStock;
+    @SerializedName("created_at")
+    private String createdAt;
 
-    @SerializedName("converted_price")
-    private double convertedPrice;
+    @SerializedName("min_converted_price")
+    private double minConvertedPrice;
 
-    @SerializedName("converted_currency")
-    private String convertedCurrency;
+    @SerializedName("min_converted_currency")
+    private String minConvertedCurrency;
 
-    @SerializedName("selling_price")
-    private double sellingPrice;
+    @SerializedName("min_selling_price")
+    private double minSellingPrice;
+
+    @SerializedName("max_converted_price")
+    private double maxConvertedPrice;
+
+    @SerializedName("max_converted_currency")
+    private String maxConvertedCurrency;
+
+    @SerializedName("max_selling_price")
+    private double maxSellingPrice;
 
     @SerializedName("store_id")
     private int storeId;
 
+    // Getters and Setters
     public int getPid() {
         return pid;
     }
@@ -77,14 +91,6 @@ public class ProductItem {
 
     public void setProductSku(String productSku) {
         this.productSku = productSku;
-    }
-
-    public int getProductWeight() {
-        return productWeight;
-    }
-
-    public void setProductWeight(int productWeight) {
-        this.productWeight = productWeight;
     }
 
     public String getStatus() {
@@ -111,12 +117,20 @@ public class ProductItem {
         this.profitMargin = profitMargin;
     }
 
-    public String getPrice() {
-        return price;
+    public String getMinPrice() {
+        return minPrice;
     }
 
-    public void setPrice(String price) {
-        this.price = price;
+    public void setMinPrice(String minPrice) {
+        this.minPrice = minPrice;
+    }
+
+    public String getMaxPrice() {
+        return maxPrice;
+    }
+
+    public void setMaxPrice(String maxPrice) {
+        this.maxPrice = maxPrice;
     }
 
     public String getCurrency() {
@@ -127,12 +141,12 @@ public class ProductItem {
         this.currency = currency;
     }
 
-    public String getChangeDate() {
-        return changeDate;
+    public int getTotalStock() {
+        return totalStock;
     }
 
-    public void setChangeDate(String changeDate) {
-        this.changeDate = changeDate;
+    public void setTotalStock(int totalStock) {
+        this.totalStock = totalStock;
     }
 
     public String getPrimaryImage() {
@@ -159,41 +173,92 @@ public class ProductItem {
         this.warehouseAddress = warehouseAddress;
     }
 
-    public int getCurrentStock() {
-        return currentStock;
+    public String getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCurrentStock(int currentStock) {
-        this.currentStock = currentStock;
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public double getConvertedPrice() {
-        return convertedPrice;
+    public double getMinConvertedPrice() {
+        return minConvertedPrice;
     }
 
-    public void setConvertedPrice(double convertedPrice) {
-        this.convertedPrice = convertedPrice;
+    public void setMinConvertedPrice(double minConvertedPrice) {
+        this.minConvertedPrice = minConvertedPrice;
     }
 
-    public String getConvertedCurrency() {
-        return convertedCurrency;
+    public String getMinConvertedCurrency() {
+        return minConvertedCurrency;
     }
 
-    public void setConvertedCurrency(String convertedCurrency) {
-        this.convertedCurrency = convertedCurrency;
+    public void setMinConvertedCurrency(String minConvertedCurrency) {
+        this.minConvertedCurrency = minConvertedCurrency;
     }
 
-    public double getSellingPrice() {
-        return sellingPrice;
+    public double getMinSellingPrice() {
+        return minSellingPrice;
     }
 
-    public void setSellingPrice(double sellingPrice) {
-        this.sellingPrice = sellingPrice;
+    public void setMinSellingPrice(double minSellingPrice) {
+        this.minSellingPrice = minSellingPrice;
     }
+
+    public double getMaxConvertedPrice() {
+        return maxConvertedPrice;
+    }
+
+    public void setMaxConvertedPrice(double maxConvertedPrice) {
+        this.maxConvertedPrice = maxConvertedPrice;
+    }
+
+    public String getMaxConvertedCurrency() {
+        return maxConvertedCurrency;
+    }
+
+    public void setMaxConvertedCurrency(String maxConvertedCurrency) {
+        this.maxConvertedCurrency = maxConvertedCurrency;
+    }
+
+    public double getMaxSellingPrice() {
+        return maxSellingPrice;
+    }
+
+    public void setMaxSellingPrice(double maxSellingPrice) {
+        this.maxSellingPrice = maxSellingPrice;
+    }
+
     public int getStoreId() {
         return storeId;
     }
+
     public void setStoreId(int storeId) {
         this.storeId = storeId;
+    }
+
+    // Helper method to get display price
+    public String getDisplayPrice() {
+        if (minSellingPrice == maxSellingPrice) {
+            return String.format("₱%.2f", minSellingPrice);
+        } else {
+            return String.format("₱%.2f - ₱%.2f", minSellingPrice, maxSellingPrice);
+        }
+    }
+
+    // Helper method to check if product has stock
+    public boolean hasStock() {
+        return totalStock > 0;
+    }
+
+    // Helper method to get stock status
+    public String getStockStatus() {
+        if (totalStock == 0) {
+            return "Out of Stock";
+        } else if (totalStock < 10) {
+            return "Low Stock";
+        } else {
+            return "In Stock";
+        }
     }
 }

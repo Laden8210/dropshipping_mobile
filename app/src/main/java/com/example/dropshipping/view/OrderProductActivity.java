@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
@@ -371,17 +372,48 @@ public class OrderProductActivity extends AppCompatActivity implements CheckoutP
 
     private void calculateTotals() {
         subtotal = 0;
+        double totalWeight = 0;
+        double maxHeight = 0;
+
+        // Calculate subtotal and collect shipping data
         for (CheckoutProduct product : productAdapter.getProductList()) {
-            subtotal += product.getPrice() * product.getQuantity();
+            double productTotal = product.getPrice() * product.getQuantity();
+            subtotal += productTotal;
+
+            // Get product dimensions (you'll need to add these to your CheckoutProduct model)
+            double productWeight = product.getWeight(); // in grams
+            double productHeight = product.getLength(); // in cm
+
+            // Accumulate total weight and track maximum height
+            totalWeight += productWeight * product.getQuantity();
+            maxHeight = Math.max(maxHeight, productHeight);
         }
 
-        shipping = 100.00;
+        // Calculate shipping fee based on total weight and max height
+        shipping = calculateShippingFeeWithQuantity(totalWeight, maxHeight);
         tax = subtotal * 0.12;
 
         subtotalPrice.setText(String.format("₱%.2f", subtotal));
         shippingPrice.setText(String.format("₱%.2f", shipping));
         taxPrice.setText(String.format("₱%.2f", tax));
         totalPrice.setText(String.format("₱%.2f", subtotal + shipping + tax));
+    }
+
+    private double shippingFeeByWeightandHeight(double weight, double height) {
+        Log.d("ShippingFee", "Weight: " + weight + ", Height: " + height);
+        if (weight <= 1000.0 && height <= 10.0) { // 1000g = 1kg
+            return 50.00;
+        } else if (weight <= 5000.0 && height <= 50.0) { // 5000g = 5kg
+            return 100.00;
+        } else if (weight <= 10000.0 && height <= 100.0) { // 10000g = 10kg
+            return 200.00;
+        } else {
+            return 500.00;
+        }
+    }
+
+    private double calculateShippingFeeWithQuantity(double totalWeightInGrams, double maxHeightInCm) {
+        return shippingFeeByWeightandHeight(totalWeightInGrams, maxHeightInCm);
     }
 
     private void placeOrder() {
@@ -394,13 +426,7 @@ public class OrderProductActivity extends AppCompatActivity implements CheckoutP
         int selectedId = paymentMethodGroup.getCheckedRadioButtonId();
         String paymentMethod = "";
 
-        if (selectedId == R.id.creditCardOption) {
-            paymentMethod = "credit_card";
-        } else if (selectedId == R.id.paypalOption) {
-            paymentMethod = "paypal";
-        } else if (selectedId == R.id.cashOption) {
-            paymentMethod = "cod";
-        }
+        paymentMethod = "cod";
 
         JSONObject orderDetails = new JSONObject();
         try {
@@ -421,6 +447,10 @@ public class OrderProductActivity extends AppCompatActivity implements CheckoutP
                 productObject.put("price", product.getPrice());
                 productObject.put("quantity", product.getQuantity());
                 productObject.put("store_id", product.getStoreId());
+                productObject.put("variation_id", product.getVariantId());
+                if (product.getCartId() != null) {
+                    productObject.put("cart_id", product.getCartId());
+                }
                 productsArray.put(productObject);
             }
             orderDetails.put("products", productsArray);

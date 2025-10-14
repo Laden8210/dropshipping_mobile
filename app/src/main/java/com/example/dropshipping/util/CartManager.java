@@ -45,6 +45,7 @@ public class CartManager {
         JSONObject data = new JSONObject();
         try {
             data.put("product_id", item.getProduct_id());
+            data.put("variation_id", item.getVariation_id());
             data.put("store_id", item.getStoreId());
             data.put("quantity", item.getQuantity());
 
@@ -95,6 +96,7 @@ public class CartManager {
                                 JSONObject itemJson = response.getJSONArray("data").getJSONObject(i);
                                 CartItem item = new CartItem(
                                         itemJson.getInt("product_id"),
+                                        itemJson.getInt("variation_id"),
                                         itemJson.getDouble("price"),
                                         itemJson.getInt("quantity"),
                                         itemJson.getInt("store_id")

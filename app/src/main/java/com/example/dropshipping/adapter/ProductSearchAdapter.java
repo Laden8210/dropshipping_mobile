@@ -9,12 +9,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.dropshipping.R;
+import com.example.dropshipping.api.ApiAddress;
 import com.example.dropshipping.model.ProductItem;
 import com.google.android.material.button.MaterialButton;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class ProductSearchAdapter extends RecyclerView.Adapter<ProductSearchAdapter.ProductSearchViewHolder> {
 
@@ -66,7 +65,8 @@ public class ProductSearchAdapter extends RecyclerView.Adapter<ProductSearchAdap
             for (ProductItem product : products) {
                 if (product.getProductName().toLowerCase().contains(lowerCaseQuery) ||
                         product.getProductSku().toLowerCase().contains(lowerCaseQuery) ||
-                        product.getCategoryName().toLowerCase().contains(lowerCaseQuery)) {
+                        product.getCategoryName().toLowerCase().contains(lowerCaseQuery) ||
+                        product.getWarehouseName().toLowerCase().contains(lowerCaseQuery)) {
                     productsFiltered.add(product);
                 }
             }
@@ -80,6 +80,7 @@ public class ProductSearchAdapter extends RecyclerView.Adapter<ProductSearchAdap
         private TextView productSku;
         private TextView productPrice;
         private TextView productStock;
+        private TextView productWarehouse;
         private MaterialButton viewDetailsButton;
 
         public ProductSearchViewHolder(@NonNull View itemView) {
@@ -89,29 +90,28 @@ public class ProductSearchAdapter extends RecyclerView.Adapter<ProductSearchAdap
             productSku = itemView.findViewById(R.id.productSku);
             productPrice = itemView.findViewById(R.id.productPrice);
             productStock = itemView.findViewById(R.id.productStock);
+            productWarehouse = itemView.findViewById(R.id.productWarehouse);
             viewDetailsButton = itemView.findViewById(R.id.viewDetailsButton);
         }
 
         public void bind(ProductItem product, OnProductClickListener listener) {
+            // Set product name
             productName.setText(product.getProductName());
-            productSku.setText("SKU: " + product.getProductSku());
 
-            // Format price
-            try {
-                double price = product.getSellingPrice();
-                String currency = product.getConvertedCurrency();
-                if (currency != null && !currency.isEmpty()) {
-                    productPrice.setText(currency + " " + String.format(Locale.getDefault(), "%.2f", price));
-                } else {
-                    productPrice.setText("$" + String.format(Locale.getDefault(), "%.2f", price));
-                }
-            } catch (Exception e) {
-                productPrice.setText(product.getPrice());
-            }
+            // Set SKU and category
+            productSku.setText(String.format("SKU: %s • %s",
+                    product.getProductSku(),
+                    product.getCategoryName()));
 
-            // Set stock with color indication
-            int stock = product.getCurrentStock();
-            productStock.setText("Stock: " + stock);
+            // Set price using the helper method
+            productPrice.setText(product.getDisplayPrice());
+
+            // Set stock and status with color coding
+            int stock = product.getTotalStock();
+            String stockText = String.format("Stock: %d • %s", stock, product.getStockStatus());
+            productStock.setText(stockText);
+
+            // Set stock color based on quantity
             if (stock > 50) {
                 productStock.setTextColor(itemView.getContext().getColor(android.R.color.holo_green_dark));
             } else if (stock > 10) {
@@ -120,10 +120,18 @@ public class ProductSearchAdapter extends RecyclerView.Adapter<ProductSearchAdap
                 productStock.setTextColor(itemView.getContext().getColor(android.R.color.holo_red_dark));
             }
 
+            // Set warehouse information
+            if (product.getWarehouseName() != null && !product.getWarehouseName().isEmpty()) {
+                productWarehouse.setText(String.format("Warehouse: %s", product.getWarehouseName()));
+                productWarehouse.setVisibility(View.VISIBLE);
+            } else {
+                productWarehouse.setVisibility(View.GONE);
+            }
+
             // Load product image
             if (product.getPrimaryImage() != null && !product.getPrimaryImage().isEmpty()) {
                 Glide.with(itemView.getContext())
-                        .load(product.getPrimaryImage())
+                        .load(ApiAddress.imageUrl + product.getPrimaryImage())
                         .placeholder(R.drawable.product_sample)
                         .error(R.drawable.product_sample)
                         .into(productImage);

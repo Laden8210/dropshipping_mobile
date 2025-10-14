@@ -22,13 +22,13 @@
             android:textStyle="bold"
             android:paddingBottom="8dp"/>
 
+        <!-- Address Section -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/productsRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:nestedScrollingEnabled="false"/>
+            android:nestedScrollingEnabled="false" />
 
-        <!-- Address Section -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -255,24 +255,12 @@
                     android:orientation="vertical"
                     android:padding="16dp">
 
-                    <RadioButton
-                        android:id="@+id/creditCardOption"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Credit Card"
-                        android:checked="true"/>
-
-                    <RadioButton
-                        android:id="@+id/paypalOption"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="PayPal"
-                        android:layout_marginTop="8dp"/>
 
                     <RadioButton
                         android:id="@+id/cashOption"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:checked="true"
                         android:text="Cash on Delivery"
                         android:layout_marginTop="8dp"/>
                 </RadioGroup>

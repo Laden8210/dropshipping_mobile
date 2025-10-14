@@ -38,7 +38,7 @@ import java.util.List;
 // CartActivity.java
 public class CartActivity extends AppCompatActivity implements PostCallback {
     private RecyclerView rvStores;
-    private TextView tvItemsTotal, tvShippingTotal, tvTax, tvOrderTotal;
+    private TextView tvItemsTotal, tvOrderTotal;
     private MaterialButton btnCheckout;
     private List<Store> stores;
     private CartStoreAdapter adapter;
@@ -53,18 +53,17 @@ public class CartActivity extends AppCompatActivity implements PostCallback {
 
         rvStores = findViewById(R.id.rvStores);
         tvItemsTotal = findViewById(R.id.tvItemsTotal);
-        tvShippingTotal = findViewById(R.id.tvShippingTotal);
-        tvTax = findViewById(R.id.tvTax);
+
         tvOrderTotal = findViewById(R.id.tvOrderTotal);
         btnCheckout = findViewById(R.id.btnCheckout);
         stores = new ArrayList<>();
 
-        // Setup adapter with empty data
+
         adapter = new CartStoreAdapter(
                 stores,
                 (storeId,  isSelected) -> handleStoreSelection(storeId, isSelected),
-                (storeId, productId, name, sellingPrice, quantity, isSelected) -> {
-                    updateProductSelection(storeId, productId, name, sellingPrice, quantity, isSelected);
+                (cartId, storeId, productId, variantId, name, sellingPrice, quantity, weight, height, isSelected) -> {
+                    updateProductSelection(cartId, storeId, productId, variantId, name, sellingPrice, quantity, weight, height, isSelected);
                     updateOrderSummary();
                 },
                 (storeId, productId, newQuantity) -> {
@@ -92,14 +91,18 @@ public class CartActivity extends AppCompatActivity implements PostCallback {
         updateOrderSummary();
     }
 
-    private void updateProductSelection(String storeId, String productId, String name, double sellingPrice, int quantity, boolean isSelected) {
+    private void updateProductSelection(String cartId, String storeId, String productId, String variantId, String name, double sellingPrice, int quantity, double weight, double height, boolean isSelected) {
         if (isSelected) {
             Log.d("CartActivity", "Adding product to checkout: " + productId + " from store: " + storeId + " with quantity: " + quantity);
             checkoutProducts.add(new CheckoutProduct(
+                    cartId,
                     Integer.parseInt(productId),
+                    Integer.parseInt(variantId),
                     name,
                     sellingPrice,
                     quantity,
+                    weight,
+                    height,
                     Integer.parseInt(storeId)
             ));
         } else {
@@ -148,9 +151,8 @@ public class CartActivity extends AppCompatActivity implements PostCallback {
         double orderTotal = itemTotal + shippingTotal + tax;
 
         tvItemsTotal.setText(String.format("₱%.2f", itemTotal));
-        tvShippingTotal.setText(String.format("₱%.2f", shippingTotal));
-        tvTax.setText(String.format("₱%.2f", tax));
-        tvOrderTotal.setText(String.format("₱%.2f", orderTotal));
+
+        tvOrderTotal.setText(String.format("₱%.2f", itemTotal));
         btnCheckout.setText("Proceed to Checkout (" + itemCount + " items)");
     }
 
@@ -190,9 +192,13 @@ public class CartActivity extends AppCompatActivity implements PostCallback {
                         double converted_price = item.getDouble("selling_price");
                         String product_image = item.getString("product_image");
                         int quantity = item.getInt("quantity");
+                        int variant_id = item.getInt("variation_id");
+
 
                         products.add(new CartProduct(
+                                String.valueOf(cart_id),
                                 String.valueOf(product_id),
+                                String.valueOf(variant_id),
                                 product_name,
                                 description,
                                 converted_price,

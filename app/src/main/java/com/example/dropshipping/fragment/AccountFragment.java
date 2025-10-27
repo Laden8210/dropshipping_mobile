@@ -10,13 +10,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.example.dropshipping.MainActivity;
 import com.example.dropshipping.R;
+import com.example.dropshipping.api.ApiAddress;
 import com.example.dropshipping.api.PostCallback;
 import com.example.dropshipping.api.PostTask;
 import com.example.dropshipping.util.Messenger;
@@ -33,6 +36,7 @@ public class AccountFragment extends Fragment {
     private LinearLayout btnContactUs, btnAboutApp;
     private MaterialButton btnEditProfile, btnLogout;
     private TextView tvUserName, tvUserEmail, tvAppVersion;
+    private ImageView ivProfilePicture;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -71,6 +75,7 @@ public class AccountFragment extends Fragment {
         tvUserName = view.findViewById(R.id.tvUserName);
         tvUserEmail = view.findViewById(R.id.tvUserEmail);
         tvAppVersion = view.findViewById(R.id.tvAppVersion);
+        ivProfilePicture = view.findViewById(R.id.ivProfilePicture);
     }
 
     private void setupClickListeners() {
@@ -105,6 +110,11 @@ public class AccountFragment extends Fragment {
 
                         tvUserName.setText(fullName);
                         tvUserEmail.setText(email);
+
+                        Glide.with(requireContext())
+                                .load(ApiAddress.userUrl  +user.getString("avatar_url"))
+                                .placeholder(R.drawable.ic_user_profile)
+                                .into(ivProfilePicture);
 
                         // Set app version
                         String versionName = requireContext().getPackageManager()

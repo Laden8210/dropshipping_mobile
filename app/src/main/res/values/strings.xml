@@ -5,6 +5,54 @@
         <item>male</item>
         <item>female</item>
     </string-array>
+
+    <!-- Bad Words Filter -->
+    <string-array name="english_bad_words">
+        <item>fuck</item>
+        <item>shit</item>
+        <item>asshole</item>
+        <item>bitch</item>
+        <item>bastard</item>
+        <item>damn</item>
+        <item>hell</item>
+        <item>crap</item>
+        <item>dick</item>
+        <item>pussy</item>
+        <item>whore</item>
+        <item>slut</item>
+        <item>nigger</item>
+        <item>nigga</item>
+        <item>fag</item>
+        <item>faggot</item>
+        <item>retard</item>
+        <item>idiot</item>
+        <item>moron</item>
+        <item>stupid</item>
+    </string-array>
+
+    <string-array name="tagalog_bad_words">
+        <item>putang ina</item>
+        <item>putangina</item>
+        <item>puta</item>
+        <item>gago</item>
+        <item>tang ina</item>
+        <item>tangina</item>
+        <item>ulol</item>
+        <item>bobo</item>
+        <item>engot</item>
+        <item>lintik</item>
+        <item>punyeta</item>
+        <item>leche</item>
+        <item>burat</item>
+        <item>tanga</item>
+        <item>sira ulo</item>
+        <item>siraulo</item>
+        <item>hayop</item>
+        <item>animal</item>
+        <item>walang hiya</item>
+        <item>bastos</item>
+    </string-array>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="notifications">Notifications</string>

@@ -62,8 +62,8 @@ public class CartActivity extends AppCompatActivity implements PostCallback {
         adapter = new CartStoreAdapter(
                 stores,
                 (storeId,  isSelected) -> handleStoreSelection(storeId, isSelected),
-                (cartId, storeId, productId, variantId, name, sellingPrice, quantity, weight, height, isSelected) -> {
-                    updateProductSelection(cartId, storeId, productId, variantId, name, sellingPrice, quantity, weight, height, isSelected);
+                (cartId, storeId, productId, variantId, name, sellingPrice, quantity, weight, height, isSelected, imageUrl) -> {
+                    updateProductSelection(cartId, storeId, productId, variantId, name, sellingPrice, quantity, weight, height, isSelected, imageUrl);
                     updateOrderSummary();
                 },
                 (storeId, productId, newQuantity) -> {
@@ -91,7 +91,7 @@ public class CartActivity extends AppCompatActivity implements PostCallback {
         updateOrderSummary();
     }
 
-    private void updateProductSelection(String cartId, String storeId, String productId, String variantId, String name, double sellingPrice, int quantity, double weight, double height, boolean isSelected) {
+    private void updateProductSelection(String cartId, String storeId, String productId, String variantId, String name, double sellingPrice, int quantity, double weight, double height, boolean isSelected, String imageUrl) {
         if (isSelected) {
             Log.d("CartActivity", "Adding product to checkout: " + productId + " from store: " + storeId + " with quantity: " + quantity);
             checkoutProducts.add(new CheckoutProduct(
@@ -103,7 +103,9 @@ public class CartActivity extends AppCompatActivity implements PostCallback {
                     quantity,
                     weight,
                     height,
-                    Integer.parseInt(storeId)
+                    Integer.parseInt(storeId),
+                    imageUrl
+
             ));
         } else {
 

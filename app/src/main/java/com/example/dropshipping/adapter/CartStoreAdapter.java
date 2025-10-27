@@ -28,7 +28,7 @@ public class CartStoreAdapter extends RecyclerView.Adapter<CartStoreAdapter.View
     }
 
     public interface OnProductSelectionChangedListener {
-        void onProductSelectionChanged(String cartId, String storeId, String productId, String variantId, String name, double price, int quantity, double weight, double height, boolean isSelected);
+        void onProductSelectionChanged(String cartId, String storeId, String productId, String variantId, String name, double price, int quantity, double weight, double height, boolean isSelected, String imageUrl);
     }
 
     public interface OnProductQuantityChangedListener {
@@ -90,7 +90,7 @@ public class CartStoreAdapter extends RecyclerView.Adapter<CartStoreAdapter.View
                 },
                 new CartProductAdapter.OnSelectionChangedListener() {
                     @Override
-                    public void onSelectionChanged(String cartId, String productId,String variantId, String name, double price, int quantity, double weight, double height, boolean isSelected) {
+                    public void onSelectionChanged(String cartId, String productId,String variantId, String name, double price, int quantity, double weight, double height, boolean isSelected, String imageUrl) {
                         if (productSelectionListener != null) {
                             productSelectionListener.onProductSelectionChanged(
                                     cartId,
@@ -102,7 +102,8 @@ public class CartStoreAdapter extends RecyclerView.Adapter<CartStoreAdapter.View
                                     quantity,
                                     weight,
                                     height,
-                                    isSelected
+                                    isSelected,
+                                    imageUrl
                             );
 
 

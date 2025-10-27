@@ -14,6 +14,8 @@ import com.bumptech.glide.Glide;
 import com.example.dropshipping.R;
 import com.example.dropshipping.api.ApiAddress;
 import com.example.dropshipping.model.CartProduct;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.List;
 
@@ -30,7 +32,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
 
 
     public interface OnSelectionChangedListener {
-        void onSelectionChanged(String cartId, String productId, String variantId, String name, double price, int quantity, double weight, double height, boolean isSelected);
+        void onSelectionChanged(String cartId, String productId, String variantId, String name, double price, int quantity, double weight, double height, boolean isSelected, String imageUrl);
     }
 
     public CartProductAdapter(Context context, List<CartProduct> products,
@@ -48,7 +50,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
         TextView tvProductName;
         TextView tvAttributes;
         TextView tvPrice;
-        TextView tvQuantity;
+        TextInputEditText etQuantity;
         Button btnDecrease;
         Button btnIncrease;
 
@@ -59,7 +61,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
             tvProductName = itemView.findViewById(R.id.tvProductName);
             tvAttributes = itemView.findViewById(R.id.tvAttributes);
             tvPrice = itemView.findViewById(R.id.tvPrice);
-            tvQuantity = itemView.findViewById(R.id.tvQuantity);
+            etQuantity = itemView.findViewById(R.id.etQuantity);
             btnDecrease = itemView.findViewById(R.id.btnDecrease);
             btnIncrease = itemView.findViewById(R.id.btnIncrease);
         }
@@ -83,7 +85,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
         holder.tvProductName.setText(product.getName());
         holder.tvAttributes.setText(product.getAttributes());
         holder.tvPrice.setText(String.format("₱%.2f", product.getPrice()));
-        holder.tvQuantity.setText(String.valueOf(product.getQuantity()));
+        holder.etQuantity.setText(String.valueOf(product.getQuantity()));
         holder.cbProduct.setChecked(product.isSelected());
 
         holder.cbProduct.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -98,14 +100,15 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
                         product.getQuantity(),
                         product.getWeight(),
                         product.getLength(),
-                        isChecked
+                        isChecked,
+                        product.getImageRes()
                 );
             }
         });
 
         holder.btnIncrease.setOnClickListener(v -> {
             int newQty = product.getQuantity() + 1;
-            holder.tvQuantity.setText(String.valueOf(newQty));
+            holder.etQuantity.setText(String.valueOf(newQty));
             if (quantityListener != null) {
                 quantityListener.onQuantityChanged(product.getId(), newQty);
             }
@@ -114,7 +117,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
         holder.btnDecrease.setOnClickListener(v -> {
             if (product.getQuantity() > 1) {
                 int newQty = product.getQuantity() - 1;
-                holder.tvQuantity.setText(String.valueOf(newQty));
+                holder.etQuantity.setText(String.valueOf(newQty));
                 if (quantityListener != null) {
                     quantityListener.onQuantityChanged(product.getId(), newQty);
                 }

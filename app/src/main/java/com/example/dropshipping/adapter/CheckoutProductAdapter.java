@@ -2,6 +2,7 @@ package com.example.dropshipping.adapter;
 
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +14,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.dropshipping.api.ApiAddress;
 import com.example.dropshipping.model.CheckoutProduct;
 import com.example.dropshipping.R;
 import com.example.dropshipping.view.OrderProductActivity;
+import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.List;
 
@@ -52,15 +55,17 @@ public class CheckoutProductAdapter extends RecyclerView.Adapter<CheckoutProduct
 
         holder.productName.setText(product.getName());
         holder.productPrice.setText(String.format("₱%.2f", product.getPrice()));
-        holder.quantityText.setText(String.valueOf(product.getQuantity()));
+        holder.etQuantity.setText(String.valueOf(product.getQuantity()));
 
         // Handle image loading with Glide/Picasso if needed
-        // Glide.with(holder.itemView).load(product.getImageUrl()).into(holder.productImage);
+         Glide.with(holder.itemView).load( ApiAddress.imageUrl + product.getImageUrl()).into(holder.productImage);
+
+        Log.d("Check out Image URL", product.getImageUrl());
 
         holder.btnIncrease.setOnClickListener(v -> {
             int newQuantity = product.getQuantity() + 1;
             product.setQuantity(newQuantity);
-            holder.quantityText.setText(String.valueOf(newQuantity));
+            holder.etQuantity.setText(String.valueOf(newQuantity));
             if(listener != null) listener.onQuantityChanged(position, newQuantity);
         });
 
@@ -68,7 +73,7 @@ public class CheckoutProductAdapter extends RecyclerView.Adapter<CheckoutProduct
             if(product.getQuantity() > 1) {
                 int newQuantity = product.getQuantity() - 1;
                 product.setQuantity(newQuantity);
-                holder.quantityText.setText(String.valueOf(newQuantity));
+                holder.etQuantity.setText(String.valueOf(newQuantity));
                 if(listener != null) listener.onQuantityChanged(position, newQuantity);
             }
         });
@@ -81,15 +86,17 @@ public class CheckoutProductAdapter extends RecyclerView.Adapter<CheckoutProduct
 
     public static class ProductViewHolder extends RecyclerView.ViewHolder {
         ImageView productImage;
-        TextView productName, productPrice, quantityText;
+        TextView productName, productPrice;
         Button btnIncrease, btnDecrease;
+
+        TextInputEditText etQuantity;
 
         public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
             productImage = itemView.findViewById(R.id.productImage);
             productName = itemView.findViewById(R.id.productName);
             productPrice = itemView.findViewById(R.id.productPrice);
-            quantityText = itemView.findViewById(R.id.tvQuantity);
+            etQuantity = itemView.findViewById(R.id.etQuantity);
             btnIncrease = itemView.findViewById(R.id.btnIncrease);
             btnDecrease = itemView.findViewById(R.id.btnDecrease);
         }

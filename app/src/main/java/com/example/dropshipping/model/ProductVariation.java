@@ -17,12 +17,13 @@ public class ProductVariation {
     private double sellingPrice;
     private double convertedPrice;
     private String convertedCurrency;
+    private String imageUrl;
 
     public ProductVariation(int variationId, int productId, String size, String color,
                             double weight, double length, double width, double height,
                             double price, String currency, String skuSuffix,
                             int stockQuantity, boolean isActive, double sellingPrice,
-                            double convertedPrice, String convertedCurrency) {
+                            double convertedPrice, String convertedCurrency, String imageUrl) {
         this.variationId = variationId;
         this.productId = productId;
         this.size = size;
@@ -39,6 +40,7 @@ public class ProductVariation {
         this.sellingPrice = sellingPrice;
         this.convertedPrice = convertedPrice;
         this.convertedCurrency = convertedCurrency;
+        this.imageUrl = imageUrl;
     }
 
     // Getters and Setters
@@ -58,4 +60,5 @@ public class ProductVariation {
     public double getSellingPrice() { return sellingPrice; }
     public double getConvertedPrice() { return convertedPrice; }
     public String getConvertedCurrency() { return convertedCurrency; }
+    public String getImageUrl() { return imageUrl; }
 }

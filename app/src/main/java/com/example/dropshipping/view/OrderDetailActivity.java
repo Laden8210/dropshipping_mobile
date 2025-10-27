@@ -29,6 +29,7 @@ import com.example.dropshipping.R;
 import com.example.dropshipping.adapter.OrderItemAdapter;
 import com.example.dropshipping.adapter.ReviewAdapter;
 import com.example.dropshipping.adapter.StatusTimelineAdapter;
+import com.example.dropshipping.api.ApiAddress;
 import com.example.dropshipping.api.PostCallback;
 import com.example.dropshipping.api.PostTask;
 import com.example.dropshipping.model.OrderItem;
@@ -250,6 +251,7 @@ public class OrderDetailActivity extends AppCompatActivity {
         RecyclerView rvReviews = bottomSheetView.findViewById(R.id.rvReviews);
         Button btnClose = bottomSheetView.findViewById(R.id.btnClose);
 
+
         // Set product data
         tvProductName.setText(item.getName());
         tvProductDescription.setText(item.getDescription());
@@ -259,13 +261,13 @@ public class OrderDetailActivity extends AppCompatActivity {
 
         // Load product image
         Glide.with(this)
-                .load(item.getImageUrl())
+                .load(ApiAddress.imageUrl + item.getImageUrl())
                 .placeholder(R.drawable.product_sample)
                 .into(ivProductImage);
 
         // Set up reviews
         List<Review> reviews = getProductReviews(item.getProductId());
-        reviewAdapter = new ReviewAdapter(reviews);
+        reviewAdapter = new ReviewAdapter(reviews, this);
         rvReviews.setLayoutManager(new LinearLayoutManager(this));
         rvReviews.setAdapter(reviewAdapter);
 

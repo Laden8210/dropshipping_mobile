@@ -26,6 +26,7 @@ import com.example.dropshipping.util.CartManager;
 import com.example.dropshipping.util.Messenger;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.textfield.TextInputEditText;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -122,7 +123,8 @@ public class ProductDetailsActivity extends AppCompatActivity implements PostCal
                                 variationObj.optInt("is_active", 1) == 1,
                                 variationObj.optDouble("selling_price", 0),
                                 variationObj.optDouble("converted_price", 0),
-                                variationObj.optString("converted_currency")
+                                variationObj.optString("converted_currency"),
+                                data.optString("primary_image_url")
                         );
                         variations.add(variation);
                     }
@@ -290,7 +292,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements PostCal
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_quantity_selector, null);
 
         TextView titleText = dialogView.findViewById(R.id.dialogTitle);
-        TextView quantityText = dialogView.findViewById(R.id.quantityText);
+        TextInputEditText quantityText = dialogView.findViewById(R.id.quantityInput);
         MaterialButton decreaseBtn = dialogView.findViewById(R.id.decreaseBtn);
         MaterialButton increaseBtn = dialogView.findViewById(R.id.increaseBtn);
         MaterialButton confirmBtn = dialogView.findViewById(R.id.confirmBtn);
@@ -361,7 +363,8 @@ public class ProductDetailsActivity extends AppCompatActivity implements PostCal
                 quantity,
                 selectedVariation.getWeight(),
                 selectedVariation.getLength(),
-                storeId
+                storeId,
+                selectedVariation.getImageUrl()
         );
         Intent intent = new Intent(this, OrderProductActivity.class);
         intent.putExtra("checkoutProduct", product);

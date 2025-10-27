@@ -1,12 +1,15 @@
 package com.example.dropshipping.util;
 
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 public class Messenger {
+
+    private static ProgressDialog progressDialog;
 
     public static MaterialAlertDialogBuilder showAlertDialog(
             Context context,
@@ -36,5 +39,21 @@ public class Messenger {
                 .setMessage(message)
                 .setPositiveButton(positive, positiveAction)
                 .setNegativeButton(negative, negativeAction);
+    }
+
+    public static void showProgressDialog(Context context, String message) {
+        dismissProgressDialog();
+
+        progressDialog = new ProgressDialog(context);
+        progressDialog.setMessage(message);
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+    }
+
+    public static void dismissProgressDialog() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+            progressDialog = null;
+        }
     }
 }

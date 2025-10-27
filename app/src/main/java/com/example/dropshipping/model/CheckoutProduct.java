@@ -19,8 +19,10 @@ public class CheckoutProduct implements Parcelable {
     private int storeId;
     private String cartId;
 
+    private String imageUrl;
 
-    public CheckoutProduct(int pid, int variantId, String name, double price, int quantity, double weight, double length,int storeId) {
+
+    public CheckoutProduct(int pid, int variantId, String name, double price, int quantity, double weight, double length,int storeId, String imageUrl) {
         this.pid = pid;
         this.variantId = variantId;
         this.name = name;
@@ -29,9 +31,10 @@ public class CheckoutProduct implements Parcelable {
         this.storeId = storeId;
         this.weight = weight;
         this.length = length;
+        this.imageUrl = imageUrl;
     }
 
-    public CheckoutProduct(String cartId, int pid, int variantId, String name, double price, int quantity, double weight, double length,int storeId) {
+    public CheckoutProduct(String cartId, int pid, int variantId, String name, double price, int quantity, double weight, double length,int storeId, String imageUrl) {
         this.cartId = cartId;
         this.pid = pid;
         this.variantId = variantId;
@@ -41,6 +44,7 @@ public class CheckoutProduct implements Parcelable {
         this.storeId = storeId;
         this.weight = weight;
         this.length = length;
+        this.imageUrl = imageUrl;
     }
 
     protected CheckoutProduct(Parcel in) {
@@ -52,6 +56,7 @@ public class CheckoutProduct implements Parcelable {
         storeId = in.readInt();
         weight = in.readDouble();
         length = in.readDouble();
+        imageUrl = in.readString();
     }
 
     @Override
@@ -64,6 +69,7 @@ public class CheckoutProduct implements Parcelable {
         dest.writeInt(storeId);
         dest.writeDouble(weight);
         dest.writeDouble(length);
+        dest.writeString(imageUrl);
     }
 
     @Override
@@ -153,5 +159,13 @@ public class CheckoutProduct implements Parcelable {
 
     public void setCartId(String cartId) {
         this.cartId = cartId;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

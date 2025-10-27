@@ -90,7 +90,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     }
 
     public void updateList(List<ProductItem> newList) {
-        productItem = newList;
+        productItem.clear();
+        productItem.addAll(newList);
         notifyDataSetChanged();
     }
 
